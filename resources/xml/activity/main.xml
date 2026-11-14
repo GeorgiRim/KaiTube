@@ -1,0 +1,59 @@
+<brls:AppletFrame
+        iconInterpolation="linear"
+        headerHidden="true"
+        footerHidden="false">
+    <brls:Box
+            axis="column"
+            width="100%"
+            height="100%">
+        <brls:Box axis="row" width="auto" height="76" alignItems="center" justifyContent="spaceBetween" paddingLeft="30" paddingRight="32" backgroundColor="#080B12">
+            <brls:Box axis="row" width="auto" height="auto" alignItems="center">
+                <brls:Label text="▶" fontSize="30" textColor="#FF526B" marginRight="12" />
+                <brls:Label text="KaiTube" fontSize="32" textColor="#F5F7FC" />
+
+            </brls:Box>
+
+        </brls:Box>
+        <AutoTabFrame
+                id="main/tabs"
+                grow="1"
+                tabBackgroundColor="@theme/color/newpipe_bg"
+                tabItemActiveTextColor="@theme/color/newpipe"
+                defaultTab="0"
+                sidebarWidth="210"
+                sidebarPosition="left"
+                tabItemActiveBackgroundColor="#29334A"
+                backgroundColor="#090D16">
+
+            <Tab style="plain"
+                    label="@i18n/app/home"
+                    fontSize="20">
+                <HomeTab/>
+            </Tab>
+
+            <Tab style="plain"
+                    label="@i18n/app/search"
+                    fontSize="20">
+                <SearchTab/>
+            </Tab>
+
+            <Tab style="plain"
+                    label="@i18n/app/subscriptions"
+                    fontSize="20">
+                <SubscriptionsTab/>
+            </Tab>
+
+            <Tab style="plain"
+                    label="@i18n/app/library"
+                    fontSize="20">
+                <LibraryTab/>
+            </Tab>
+
+            <Tab style="plain"
+                    label="@i18n/app/settings"
+                    fontSize="20">
+                <SettingsTab/>
+            </Tab>
+        </AutoTabFrame>
+    </brls:Box>
+</brls:AppletFrame>

@@ -1,0 +1,249 @@
+{
+  "app": {
+    "title": "KaiTube",
+    "home": "Home",
+    "search": "Cerca",
+    "subscriptions": "Iscrizioni",
+    "library": "Raccolta",
+    "settings": "Impostazioni",
+    "info_body": "KaiTube\nVersione: {}\nAutore: Sank-kab\nClient sperimentale. Componenti e licenze nel pacchetto sorgente.",
+    "playback_failed": "Riproduzione non riuscita: {}"
+  },
+  "hints": {
+    "ok": "OK",
+    "cancel": "Annulla",
+    "back": "Indietro",
+    "exit": "Esci",
+    "exit_hint": "Vuoi chiudere l'app?",
+    "open": "Apri",
+    "on": "Attivo",
+    "off": "Disattivo",
+    "delete": "Elimina",
+    "save": "Salva",
+    "input": "Inserisci...",
+    "submit": "Invia"
+  },
+  "common": {
+    "close": "Chiudi",
+    "info": "Informazioni",
+    "none": "Nessuno",
+    "refresh": "Aggiorna",
+    "service_init_failed": "Avvio del servizio non riuscito: {}",
+    "count_with_title": "{} • {} elementi"
+  },
+  "home": {
+    "category_action": "Categoria",
+    "preparing": "Caricamento della Home",
+    "no_kiosk": "Nessuna categoria disponibile",
+    "load_failed": "Impossibile caricare la Home"
+  },
+  "search": {
+    "action": "Cerca",
+    "ime_title": "Inserisci la ricerca",
+    "ime_subtitle": "Video o canale",
+    "prompt": "Premi X per cercare",
+    "no_results": "Nessun risultato per \"{}\"",
+    "results_count": "\"{}\" • {} risultati"
+  },
+  "subscriptions": {
+    "session_action": "Account",
+    "session_load_failed": "Impossibile caricare l'account",
+    "feed_load_failed": "Impossibile caricare le iscrizioni",
+    "current_source": "Origine attuale:\n{}",
+    "session_prefix": "Account: {}",
+    "controls": "A Riproduci • Y Info • X Aggiorna • R Account",
+    "signed_out_title": "Accesso richiesto",
+    "session_dialog": {
+      "load_file": "Carica file",
+      "input_cookie": "Incolla cookie",
+      "ime_title": "Incolla cookie",
+      "ime_subtitle": "Intestazione Cookie o JSON su una riga",
+      "logout": "Disconnetti",
+      "load_file_done": "File di autenticazione importato",
+      "load_file_failed": "Importazione non riuscita",
+      "logout_done": "Account disconnesso",
+      "logout_failed": "Disconnessione non riuscita",
+      "empty_input": "Nessun testo inserito",
+      "save_cookie_done": "Sessione salvata",
+      "save_cookie_failed": "Salvataggio sessione non riuscito",
+      "saved": "Collegato\n{}",
+      "signed_out": "Non collegato\n{}"
+    },
+    "session_load_failed_body": "Impossibile caricare l'account",
+    "feed_load_failed_body": "Impossibile caricare le iscrizioni",
+    "signed_out_body": "Accesso richiesto\n{}"
+  },
+  "library": {
+    "section_action": "Sezione",
+    "clear_action": "Cancella",
+    "favorites": "Preferiti locali",
+    "history": "Cronologia locale",
+    "favorites_empty": "Nessun preferito. L passa alla cronologia, R cancella questa sezione.",
+    "history_empty": "Qui appariranno i video riprodotti. L passa ai preferiti, R cancella la cronologia.",
+    "controls": "A Riproduci • X Aggiorna • L Sezione • R Cancella • Y Playlist",
+    "clear_failed": "Cancellazione non riuscita",
+    "favorites_cleared": "Preferiti cancellati",
+    "history_cleared": "Cronologia cancellata"
+  },
+  "settings": {
+    "reset_action": "Ripristina",
+    "reset_failed": "Ripristino non riuscito",
+    "reset_done": "Impostazioni predefinite ripristinate",
+    "language": {
+      "title": "Lingua",
+      "save_failed": "Salvataggio lingua non riuscito",
+      "saved": "Lingua applicata",
+      "options": {
+        "auto": "Lingua della console",
+        "korean": "Coreano",
+        "english": "Inglese"
+      }
+    },
+    "playback_quality": {
+      "title": "Qualità video",
+      "save_failed": "Salvataggio qualità non riuscito",
+      "saved": "Qualità salvata",
+      "options": {
+        "best": "Automatica (TV 1080p / portatile 720p)",
+        "hd_1080": "1080p",
+        "hd_720": "720p",
+        "low_320": "360p"
+      }
+    },
+    "startup_tab": {
+      "title": "Sezione all'avvio",
+      "save_failed": "Salvataggio sezione non riuscito",
+      "saved": "La sezione cambierà al prossimo avvio"
+    },
+    "home_kiosk": {
+      "title": "Categoria iniziale",
+      "save_failed": "Salvataggio categoria non riuscito",
+      "saved": "Si applica al prossimo aggiornamento della Home",
+      "options": {
+        "recommended": "Consigliati pubblici",
+        "live": "Dirette",
+        "music": "Musica",
+        "gaming": "Videogiochi"
+      }
+    },
+    "hide_shorts": {
+      "title": "Nascondi video brevi",
+      "save_failed": "Salvataggio filtro non riuscito",
+      "enabled": "Video brevi nascosti",
+      "disabled": "Video brevi visibili"
+    },
+    "session": {
+      "title": "Cookie YouTube",
+      "load_failed": "Caricamento account non riuscito",
+      "saved": "Collegato",
+      "signed_out": "Non collegato",
+      "dialog": {
+        "load_failed": "Caricamento account non riuscito\n{}",
+        "signed_out": "Non collegato",
+        "saved": "Collegato\n{}\n{}",
+        "source": "Origine attuale:\n{}"
+      }
+    },
+    "storage": {
+      "title": "Archiviazione",
+      "detail": "Impostazioni, account e raccolta",
+      "dialog": {
+        "body": "Impostazioni:\n{}\n\nAccount Google:\n{}\n\nConfigurazione Google:\n{}\n\nRaccolta:\n{}"
+      }
+    }
+  },
+  "detail": {
+    "play_action": "Riproduci",
+    "channel_action": "Canale",
+    "related_action": "Correlati",
+    "more_action": "Altro",
+    "favorite_action": "Salva",
+    "unfavorite_action": "Rimuovi dai preferiti",
+    "default_title": "Dettagli video",
+    "no_description": "Nessuna descrizione disponibile.",
+    "status_play": "A Riproduci",
+    "status_channel": " • X Canale",
+    "status_related": " • Y Correlati",
+    "status_more": " • L Altro",
+    "status_comments": " • L Commenti",
+    "status_favorite": " • R Preferito",
+    "playback_url_failed": "Impossibile ottenere l'indirizzo video",
+    "channel_load_failed": "Impossibile caricare il canale",
+    "related_load_failed": "Impossibile caricare i video correlati",
+    "extras_title": "Altre azioni",
+    "playlist_action": "Playlist",
+    "comments_action": "Commenti",
+    "playlist_load_failed": "Impossibile caricare la playlist",
+    "comments_load_failed": "Impossibile caricare i commenti",
+    "favorite_save_failed": "Salvataggio preferito non riuscito",
+    "favorite_added": "Aggiunto ai preferiti",
+    "favorite_removed": "Rimosso dai preferiti"
+  },
+  "feed": {
+    "subtitle": "A Riproduci • Y Dettagli • B Indietro"
+  },
+  "comments": {
+    "title": "Commenti",
+    "subtitle": "B Indietro",
+    "verified": "Verificato",
+    "unknown_author": "Utente sconosciuto",
+    "likes": "Mi piace {}",
+    "replies": "Risposte {}"
+  },
+  "player": {
+    "status": {
+      "paused": "IN PAUSA",
+      "live": "IN DIRETTA",
+      "playing": "IN RIPRODUZIONE",
+      "volume": "VOL"
+    },
+    "osd_controls": "A Pausa • B Indietro • X Opzioni • Y Barra • L/R 10s",
+    "osd": {
+      "auto": "COMANDI AUTOMATICI",
+      "locked": "COMANDI VISIBILI",
+      "audio_download_failed": "DOWNLOAD AUDIO NON RIUSCITO",
+      "audio_attach_failed": "APERTURA AUDIO NON RIUSCITA",
+      "playback_ready": "RIPRODUZIONE PRONTA",
+      "volume": "VOLUME {}",
+      "seek": "POSIZIONE {} / {}",
+      "seek_unavailable": "SPOSTAMENTO NON DISPONIBILE",
+      "seek_live": "DIRETTA: SPOSTAMENTO NON DISPONIBILE",
+      "seek_buffer_limit": "CARICATO FINO A {}"
+    },
+    "loading": {
+      "preparing_playback": "Preparazione video • B Indietro",
+      "opening_media_stream": "Apertura del flusso",
+      "waiting_for_mpv_load": "Preparazione del lettore",
+      "opening_direct_media": "Apertura video diretto",
+      "non_youtube_url": "Indirizzo esterno",
+      "direct_stream_ready": "Flusso pronto",
+      "opening_live_stream": "Apertura diretta",
+      "direct_playback": "Riproduzione diretta",
+      "direct_dash_playback": "Riproduzione DASH",
+      "downloading_video_data": "Caricamento dati video",
+      "received": "Ricevuto",
+      "starting_transfer": "Avvio trasferimento",
+      "initial_buffer_ready": "Buffer iniziale pronto",
+      "download_complete": "Caricamento completato",
+      "attaching_audio_track": "Preparazione audio",
+      "stream_720_failed": "Flusso principale non disponibile",
+      "fallback_safe_stream": "Prova di un flusso alternativo",
+      "playback_started": "Riproduzione avviata",
+      "video_frame_ready": "Primo fotogramma pronto",
+      "reading_stream_buffer": "Lettura del buffer",
+      "contacting_video_cdn": "Connessione al server video",
+      "buffering_first_frame": "Caricamento primo fotogramma",
+      "following_playlist_redirect": "Apertura playlist",
+      "resolving_youtube_stream": "Recupero video YouTube",
+      "contacting_player_api": "Richiesta informazioni video",
+      "selecting_playable_format": "Scelta del formato",
+      "requesting_hls_stream": "Richiesta flusso HLS",
+      "requesting_avc_stream": "Richiesta flusso AVC",
+      "requesting_progressive_stream": "Richiesta video con audio",
+      "requesting_ump_stream": "Richiesta flusso UMP"
+    }
+  },
+  "stream": {
+    "live_badge": "IN DIRETTA"
+  }
+}

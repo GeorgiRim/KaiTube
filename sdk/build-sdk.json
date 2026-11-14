@@ -1,0 +1,10 @@
+{
+  "version": "20261113",
+  "kaihen": "0.0.4",
+  "sha256": "30d28d0909a0a60b4de87930d773ac9770530d70a1b9b3acd3b0491579368a9b",
+  "components": [
+    "libounce db3f88a3",
+    "ouncevk 791c34e",
+    "ouncehen 9451c44"
+  ]
+}

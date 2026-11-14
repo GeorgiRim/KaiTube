@@ -1,0 +1,249 @@
+{
+  "app": {
+    "title": "KaiTube",
+    "home": "Início",
+    "search": "Pesquisar",
+    "subscriptions": "Inscrições",
+    "library": "Biblioteca",
+    "settings": "Definições",
+    "info_body": "KaiTube\nVersão: {}\nAutor: Sank-kab\nCliente experimental. Componentes e licenças no pacote de código.",
+    "playback_failed": "Falha na reprodução: {}"
+  },
+  "hints": {
+    "ok": "OK",
+    "cancel": "Cancelar",
+    "back": "Voltar",
+    "exit": "Sair",
+    "exit_hint": "Sair da aplicação?",
+    "open": "Abrir",
+    "on": "Ativado",
+    "off": "Desativado",
+    "delete": "Eliminar",
+    "save": "Guardar",
+    "input": "Introduzir...",
+    "submit": "Enviar"
+  },
+  "common": {
+    "close": "Fechar",
+    "info": "Informações",
+    "none": "Nenhum",
+    "refresh": "Atualizar",
+    "service_init_failed": "Falha ao iniciar o serviço: {}",
+    "count_with_title": "{} • {} itens"
+  },
+  "home": {
+    "category_action": "Categoria",
+    "preparing": "A carregar o início",
+    "no_kiosk": "Sem categorias disponíveis",
+    "load_failed": "Não foi possível carregar o início"
+  },
+  "search": {
+    "action": "Pesquisar",
+    "ime_title": "Introduzir pesquisa",
+    "ime_subtitle": "Vídeo ou canal",
+    "prompt": "Premir X para pesquisar",
+    "no_results": "Sem resultados para «{}»",
+    "results_count": "«{}» • {} resultados"
+  },
+  "subscriptions": {
+    "session_action": "Conta",
+    "session_load_failed": "Não foi possível carregar a conta",
+    "feed_load_failed": "Não foi possível carregar as inscrições",
+    "current_source": "Origem atual:\n{}",
+    "session_prefix": "Conta: {}",
+    "controls": "A Reproduzir • Y Info • X Atualizar • R Conta",
+    "signed_out_title": "Início de sessão necessário",
+    "session_dialog": {
+      "load_file": "Carregar ficheiro",
+      "input_cookie": "Colar cookie",
+      "ime_title": "Colar cookie",
+      "ime_subtitle": "Cabeçalho Cookie ou JSON numa linha",
+      "logout": "Terminar sessão",
+      "load_file_done": "Ficheiro de autenticação importado",
+      "load_file_failed": "Falha na importação",
+      "logout_done": "Sessão terminada",
+      "logout_failed": "Falha ao terminar sessão",
+      "empty_input": "Nenhum texto introduzido",
+      "save_cookie_done": "Sessão guardada",
+      "save_cookie_failed": "Falha ao guardar a sessão",
+      "saved": "Ligado\n{}",
+      "signed_out": "Não ligado\n{}"
+    },
+    "session_load_failed_body": "Não foi possível carregar a conta",
+    "feed_load_failed_body": "Não foi possível carregar as inscrições",
+    "signed_out_body": "Início de sessão necessário\n{}"
+  },
+  "library": {
+    "section_action": "Secção",
+    "clear_action": "Limpar",
+    "favorites": "Favoritos locais",
+    "history": "Histórico local",
+    "favorites_empty": "Sem favoritos. L: histórico, R: limpar esta secção.",
+    "history_empty": "Os vídeos reproduzidos aparecem aqui. L: favoritos, R: limpar histórico.",
+    "controls": "A Reproduzir • X Atualizar • L Secção • R Limpar • Y Listas",
+    "clear_failed": "Falha ao limpar",
+    "favorites_cleared": "Favoritos eliminados",
+    "history_cleared": "Histórico eliminado"
+  },
+  "settings": {
+    "reset_action": "Repor",
+    "reset_failed": "Falha ao repor",
+    "reset_done": "Definições predefinidas repostas",
+    "language": {
+      "title": "Idioma",
+      "save_failed": "Não foi possível guardar o idioma",
+      "saved": "Idioma aplicado",
+      "options": {
+        "auto": "Idioma da consola",
+        "korean": "Coreano",
+        "english": "Inglês"
+      }
+    },
+    "playback_quality": {
+      "title": "Qualidade do vídeo",
+      "save_failed": "Não foi possível guardar a qualidade",
+      "saved": "Qualidade guardada",
+      "options": {
+        "best": "Automática (TV 1080p / portátil 720p)",
+        "hd_1080": "1080p",
+        "hd_720": "720p",
+        "low_320": "360p"
+      }
+    },
+    "startup_tab": {
+      "title": "Secção inicial",
+      "save_failed": "Não foi possível guardar a secção",
+      "saved": "Será aplicado no próximo início"
+    },
+    "home_kiosk": {
+      "title": "Categoria predefinida",
+      "save_failed": "Não foi possível guardar a categoria",
+      "saved": "Aplica-se ao atualizar o início",
+      "options": {
+        "recommended": "Recomendações públicas",
+        "live": "Em direto",
+        "music": "Música",
+        "gaming": "Jogos"
+      }
+    },
+    "hide_shorts": {
+      "title": "Ocultar vídeos curtos",
+      "save_failed": "Não foi possível guardar o filtro",
+      "enabled": "Vídeos curtos ocultos",
+      "disabled": "Vídeos curtos visíveis"
+    },
+    "session": {
+      "title": "Cookies do YouTube",
+      "load_failed": "Falha ao carregar a conta",
+      "saved": "Ligado",
+      "signed_out": "Não ligado",
+      "dialog": {
+        "load_failed": "Falha ao carregar a conta\n{}",
+        "signed_out": "Não ligado",
+        "saved": "Ligado\n{}\n{}",
+        "source": "Origem atual:\n{}"
+      }
+    },
+    "storage": {
+      "title": "Armazenamento",
+      "detail": "Definições, conta e biblioteca",
+      "dialog": {
+        "body": "Definições:\n{}\n\nConta Google:\n{}\n\nConfiguração Google:\n{}\n\nBiblioteca:\n{}"
+      }
+    }
+  },
+  "detail": {
+    "play_action": "Reproduzir",
+    "channel_action": "Canal",
+    "related_action": "Relacionados",
+    "more_action": "Mais",
+    "favorite_action": "Guardar favorito",
+    "unfavorite_action": "Remover favorito",
+    "default_title": "Detalhes do vídeo",
+    "no_description": "Sem descrição disponível.",
+    "status_play": "A Reproduzir",
+    "status_channel": " • X Canal",
+    "status_related": " • Y Relacionados",
+    "status_more": " • L Mais",
+    "status_comments": " • L Comentários",
+    "status_favorite": " • R Favorito",
+    "playback_url_failed": "Não foi possível obter o endereço do vídeo",
+    "channel_load_failed": "Não foi possível carregar o canal",
+    "related_load_failed": "Não foi possível carregar vídeos relacionados",
+    "extras_title": "Mais ações",
+    "playlist_action": "Lista de reprodução",
+    "comments_action": "Comentários",
+    "playlist_load_failed": "Não foi possível carregar a lista",
+    "comments_load_failed": "Não foi possível carregar os comentários",
+    "favorite_save_failed": "Não foi possível guardar o favorito",
+    "favorite_added": "Adicionado aos favoritos",
+    "favorite_removed": "Removido dos favoritos"
+  },
+  "feed": {
+    "subtitle": "A Reproduzir • Y Detalhes • B Voltar"
+  },
+  "comments": {
+    "title": "Comentários",
+    "subtitle": "B Voltar",
+    "verified": "Verificado",
+    "unknown_author": "Utilizador desconhecido",
+    "likes": "Gostos {}",
+    "replies": "Respostas {}"
+  },
+  "player": {
+    "status": {
+      "paused": "EM PAUSA",
+      "live": "EM DIRETO",
+      "playing": "A REPRODUZIR",
+      "volume": "VOL"
+    },
+    "osd_controls": "A Pausa • B Voltar • X Opções • Y Barra • L/R 10s",
+    "osd": {
+      "auto": "CONTROLOS AUTOMÁTICOS",
+      "locked": "CONTROLOS VISÍVEIS",
+      "audio_download_failed": "FALHA AO DESCARREGAR ÁUDIO",
+      "audio_attach_failed": "FALHA AO ABRIR ÁUDIO",
+      "playback_ready": "REPRODUÇÃO PRONTA",
+      "volume": "VOLUME {}",
+      "seek": "POSIÇÃO {} / {}",
+      "seek_unavailable": "DESLOCAÇÃO INDISPONÍVEL",
+      "seek_live": "DIRETO: DESLOCAÇÃO INDISPONÍVEL",
+      "seek_buffer_limit": "CARREGADO ATÉ {}"
+    },
+    "loading": {
+      "preparing_playback": "A preparar vídeo • B Voltar",
+      "opening_media_stream": "A abrir fluxo",
+      "waiting_for_mpv_load": "A preparar leitor",
+      "opening_direct_media": "A abrir vídeo direto",
+      "non_youtube_url": "Endereço externo",
+      "direct_stream_ready": "Fluxo pronto",
+      "opening_live_stream": "A abrir direto",
+      "direct_playback": "Reprodução direta",
+      "direct_dash_playback": "Reprodução DASH",
+      "downloading_video_data": "A carregar dados de vídeo",
+      "received": "Recebido",
+      "starting_transfer": "A iniciar transferência",
+      "initial_buffer_ready": "Buffer inicial pronto",
+      "download_complete": "Carregamento concluído",
+      "attaching_audio_track": "A preparar áudio",
+      "stream_720_failed": "Fluxo principal indisponível",
+      "fallback_safe_stream": "A tentar fluxo alternativo",
+      "playback_started": "Reprodução iniciada",
+      "video_frame_ready": "Primeiro fotograma pronto",
+      "reading_stream_buffer": "A ler buffer",
+      "contacting_video_cdn": "A ligar ao servidor de vídeo",
+      "buffering_first_frame": "A carregar primeiro fotograma",
+      "following_playlist_redirect": "A abrir lista",
+      "resolving_youtube_stream": "A obter vídeo do YouTube",
+      "contacting_player_api": "A pedir informações do vídeo",
+      "selecting_playable_format": "A selecionar formato",
+      "requesting_hls_stream": "A pedir fluxo HLS",
+      "requesting_avc_stream": "A pedir fluxo AVC",
+      "requesting_progressive_stream": "A pedir vídeo com áudio",
+      "requesting_ump_stream": "A pedir fluxo UMP"
+    }
+  },
+  "stream": {
+    "live_badge": "EM DIRETO"
+  }
+}

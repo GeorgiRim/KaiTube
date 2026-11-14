@@ -1,0 +1,17 @@
+/sdk/ounce-sdk.tar.xz
+/build/
+/cmake-build-*/
+/.build-*/
+/output/
+/private/
+*.log
+*.nro
+*.elf
+*.map
+*.o
+*.a
+__pycache__/
+*kaitube_native_auth*
+*kaitube_native_session*
+*google-client.json
+account.json

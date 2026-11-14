@@ -1,0 +1,11 @@
+**/.git
+**/build
+**/cmake-build-*
+.build-*
+output
+.gitignore
+private/google-client.json
+resources/google-client.json
+
+.friends-build
+friends

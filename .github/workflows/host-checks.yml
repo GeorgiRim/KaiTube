@@ -1,0 +1,26 @@
+name: Host checks
+on: [push, pull_request, workflow_dispatch]
+permissions:
+  contents: read
+jobs:
+  regression:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install host dependencies
+        run: sudo apt-get update && sudo apt-get install -y g++ libssl-dev
+      - name: Validate resources and scripts
+        run: |
+          python3 scripts/check-translations.py
+          bash -n build.sh build-native.sh scripts/build-app.sh
+      - name: Host regression tests
+        run: |
+          set -e
+          g++ -std=c++17 -Iinclude -Ivendor/third_party tests/auth_cookie_beta_test.cpp -lcrypto -o /tmp/auth-test
+          /tmp/auth-test
+          g++ -std=c++17 -Iinclude -Ivendor/third_party tests/account_captions_test.cpp src/common/captions.cpp -o /tmp/captions-test
+          /tmp/captions-test
+          g++ -std=c++17 -Iinclude -Ivendor/third_party tests/resume_store_test.cpp -o /tmp/resume-test
+          /tmp/resume-test
+          g++ -std=c++17 -Iinclude -Ivendor/third_party tests/ump_test.cpp src/common/ump.cpp -o /tmp/ump-test
+          /tmp/ump-test

@@ -1,0 +1,28 @@
+<brls:Box
+    width="auto"
+    height="auto">
+    <brls:ScrollingFrame scrollingBehavior="centered"
+        width="auto"
+        height="auto"
+        axis="column"
+        alignItems="stretch"
+        grow="1.0">
+        <brls:Box
+            width="auto"
+            height="auto"
+            axis="column"
+            alignItems="stretch"
+            paddingTop="@style/brls/sidebar/padding_top"
+            paddingRight="@style/brls/sidebar/padding_right"
+            paddingBottom="@style/brls/sidebar/padding_bottom"
+            paddingLeft="@style/brls/sidebar/padding_left">
+            <brls:Label text="@i18n/app/settings" fontSize="32" textColor="#F5F7FC" marginBottom="12" />
+            <brls:SelectorCell id="settings/language"/>
+            <brls:SelectorCell id="settings/playback_quality"/>
+            <brls:SelectorCell id="settings/startup_tab"/>
+            <brls:SelectorCell id="settings/home_kiosk"/>
+            <brls:BooleanCell id="settings/hide_shorts"/>
+            <brls:DetailCell id="settings/session"/>
+        </brls:Box>
+    </brls:ScrollingFrame>
+</brls:Box>

@@ -1,0 +1,40 @@
+<brls:Box
+    width="auto"
+    height="auto"
+    axis="column"
+    paddingTop="24"
+    paddingLeft="42"
+    paddingRight="42">
+
+    <brls:Label text="@i18n/app/home" fontSize="40" textColor="#F5F7FC" marginBottom="6" />
+    <brls:Label id="home/source" text="@i18n/settings/home_kiosk/options/recommended" fontSize="16" textColor="#96A5BD" marginBottom="20" />
+
+    <brls:Label
+        id="home/status"
+        width="auto"
+        height="auto"
+        text="@i18n/home/preparing"
+        fontSize="17"
+        textColor="#BDC7D9"
+        marginBottom="12" />
+
+    <brls:ProgressSpinner
+        id="home/spinner"
+        width="auto"
+        height="80"
+        visibility="gone" />
+
+    <brls:ScrollingFrame scrollingBehavior="centered"
+        id="home/scroll"
+        width="auto"
+        grow="1.0">
+
+        <brls:Box
+            id="home/grid"
+            width="auto"
+            height="auto"
+            axis="column" />
+
+    </brls:ScrollingFrame>
+
+</brls:Box>
