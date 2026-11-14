@@ -31,5 +31,5 @@ nacp=nro[asset+nacp_offset:asset+nacp_offset+nacp_size]
 def cstr(data): return data.split(b'\0',1)[0].decode('utf-8')
 assert cstr(nacp[:512])=='KaiTube','Unexpected hbmenu title'
 assert cstr(nacp[512:768])=='Sank-kab','Unexpected hbmenu author'
-assert cstr(nacp[0x3060:0x3070])=='beta0.0.1','Unexpected hbmenu version'
-print('NRO presentation checked: KaiTube / Sank-kab / beta0.0.1 and matching icon.')
+assert cstr(nacp[0x3060:0x3070])=='beta0.0.2','Unexpected hbmenu version'
+print('NRO presentation checked: KaiTube / Sank-kab / beta0.0.2 and matching icon.')

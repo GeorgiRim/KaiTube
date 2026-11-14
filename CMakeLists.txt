@@ -14,11 +14,11 @@ include(${BOREALIS_LIBRARY}/cmake/commonOption.cmake)
 include(${BOREALIS_LIBRARY}/cmake/toolchain.cmake)
 
 project(switch_newpipe
-    VERSION 0.0.1
+    VERSION 0.0.2
     LANGUAGES C CXX
 )
 
-set(KAITUBE_RELEASE "beta0.0.1")
+set(KAITUBE_RELEASE "beta0.0.2")
 set(PROJECT_AUTHOR "Sank-kab")
 set(PROJECT_ICON ${CMAKE_CURRENT_SOURCE_DIR}/resources/icon/icon.jpg)
 # Stage Borealis defaults first, then the app overrides. Both resource backends

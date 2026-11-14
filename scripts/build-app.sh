@@ -30,8 +30,8 @@ cmake --build cmake-build-switch2 -j"$(nproc)" --target switch_newpipe.nro
 # Verify the app was compiled for Switch 2 and linked the bundled libounce.
 python3 scripts/verify-build.py
 mkdir -p output
-cp cmake-build-switch2/switch_newpipe.nro output/KaiTube-beta0.0.1.nro
+cp cmake-build-switch2/switch_newpipe.nro output/KaiTube-beta0.0.2.nro
 cp cmake-build-switch2/kaitube-native.map output/
 cp cmake-build-switch2/switch_newpipe.elf output/KaiTube-Native.elf
 cp /opt/devkitpro/ounce-devkit-version.txt output/
-sha256sum output/KaiTube-beta0.0.1.nro | tee output/SHA256SUMS
+(cd output && sha256sum KaiTube-beta0.0.2.nro) | tee output/SHA256SUMS

@@ -1,11 +1,13 @@
-# KaiTube v0.0.1-beta
+# KaiTube v0.0.2-beta — Home Refresh Fix
 
-Experimental native YouTube client for Nintendo Switch 2 by Sank-kab, built with ounce-devkit 20261114. Requires compatible KaiHEN; this is not a Switch 1 binary.
+- Fixed explicit Home refresh after returning from a video: X requests a fresh feed instead of restoring the previous grid.
+- Fixed category changes reusing the restored Home grid.
+- Kept the existing grid/focus restoration when returning from the player.
+- Updated the cookie guide with the private-window / robots.txt export procedure and closing the window without logging out.
+- Version shown in hbmenu and output filename updated to beta0.0.2.
 
-Copy `KaiTube-beta0.0.1.nro` to `/switch/` on the SD. For account access follow docs/COOKIES.md; never share cookie/session files. Decoder Auto is recommended for HD playback. Available qualities, captions and performance depend on video format, network and decoder support.
+YouTube may still return the same recommendations even after a successful refresh.
 
-Includes sidebar UI, public search, cookie-based personalized Home/subscriptions/read-only YouTube history, local saved videos/searches/resume, quality/speed/subtitle controls and timeline seeking. Authenticated feeds are capped at 96 items/seven continuations. Account playlists and cloud search history are not implemented.
+Built with ounce-devkit 20261114; requires compatible KaiHEN on Nintendo Switch 2. Copy KaiTube-beta0.0.2.nro to /switch/. Keep decoder mode on Automatic for HD playback. See docs/COOKIES.md for account setup. Existing working sessions retain their paths and do not require reimporting for this update.
 
-The developer reports successful console testing and fresh-cookie login. SDK migration, cleaned resources and SD save replacement handling are included. See BINARY-AUDIT.md for the exact checked binary hash and limitations.
-
-Unofficial and experimental; not affiliated with Nintendo or Google. Corresponding source is in this repository; dependency notices and external-source requirements apply. No cookies, session files or SDK archive belong in release assets.
+Release preparation only: do not publish until the new versioned NRO has been built, smoke-tested and its hash/binary checked. Preserve the previous v0.0.1-beta release.

@@ -16,7 +16,7 @@ fi
 python3 scripts/check-sdk.py
 python3 scripts/check-translations.py
 mkdir -p output/logs
-rm -f output/KaiTube-beta0.0.1.nro
+rm -f output/KaiTube-beta0.0.2.nro
 set +e
 (
     set -e
@@ -30,4 +30,4 @@ if [[ "$result" != 0 ]]; then
     echo 'Build interrotta. Invia output/logs/build-native.log.' >&2
     exit "$result"
 fi
-echo 'Creato: output/KaiTube-beta0.0.1.nro'
+echo 'Creato: output/KaiTube-beta0.0.2.nro'

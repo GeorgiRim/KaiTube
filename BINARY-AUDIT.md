@@ -1,3 +1,7 @@
+# Historical binary audit: beta0.0.1
+
+This report applies only to the 0.0.1 hash below. A beta0.0.2 NRO has not yet been submitted for final inspection. Do not use the old checksum for a new build; output/SHA256SUMS is regenerated after a successful build.
+
 # Validated beta candidate
 
 File supplied by the developer: `KaiTube-cookie-fix.nro` (release name may be `KaiTube-beta0.0.1.nro`; renaming does not alter its bytes).

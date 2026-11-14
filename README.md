@@ -6,7 +6,7 @@ Experimental native YouTube client for **Nintendo Switch 2**, by **Sank-kab**. B
 
 ## Status
 
-Beta **0.0.1**, built with public ounce-devkit **20261114**. The developer reports that the cleaned build works on the console and that account access works after freshly reimporting cookies. The SD session-replacement fix is included. Host checks passed on GitHub Actions. Static binary inspection is documented in [BINARY-AUDIT.md](BINARY-AUDIT.md); this is not a guarantee of bug-free operation or an exhaustive security/legal audit.
+Beta **0.0.2** release preparation, built with public ounce-devkit **20261114**. Includes the Home refresh/category fix, which the developer tested on-console before the version bump, and the SD session-replacement fix. The new versioned NRO still needs its final build, smoke test and binary inspection before publishing a 0.0.2 release. [BINARY-AUDIT.md](BINARY-AUDIT.md) currently documents the historical 0.0.1 binary only.
 
 ## Features
 
@@ -26,7 +26,7 @@ bash scripts/download-sdk.sh
 bash build.sh
 ```
 
-Output: `output/KaiTube-beta0.0.1.nro`. Build log: `output/logs/build-native.log`. The `--public` argument remains compatible and requires no Google OAuth client. The build checks the SDK hash, translations, Switch 2 linkage, icon, author and NACP version.
+Output: `output/KaiTube-beta0.0.2.nro`. Build log: `output/logs/build-native.log`. The `--public` argument remains compatible and requires no Google OAuth client. The build checks the SDK hash, translations, Switch 2 linkage, icon, author and NACP version.
 
 Copy the NRO to `/switch/` on your SD. Keep a working backup. Existing settings and session paths are preserved.
 
