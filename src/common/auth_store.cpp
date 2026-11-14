@@ -49,19 +49,55 @@ bool read_text_file(const std::string& path, std::string& out) {
     return true;
 }
 
-bool write_text_file(const std::string& path, const std::string& contents) {
+// Some SD backends reject rename over an existing destination. Keep the old
+// file as a recoverable backup until the temporary file has been committed.
+bool write_text_file(const std::string& path, const std::string& contents,
+                     int (*rename_file)(const char*, const char*) = std::rename) {
     const std::string temporary = path + ".tmp";
+    const std::string backup = path + ".bak";
     std::ofstream output(temporary, std::ios::binary | std::ios::trunc);
-    if (!output.good()) return false;
+    if (!output.good()) { logf("auth-save: open temporary failed errno=%d", errno); return false; }
     output.write(contents.data(), static_cast<std::streamsize>(contents.size()));
     output.flush();
     bool ok = output.good();
     output.close();
     ok = ok && !output.fail();
-    if (!ok || std::rename(temporary.c_str(), path.c_str()) != 0) {
+    if (!ok) {
+        logf("auth-save: write/close failed errno=%d", errno);
         std::remove(temporary.c_str());
         return false;
     }
+    if (rename_file(temporary.c_str(), path.c_str()) == 0) {
+        std::remove(backup.c_str());
+        return true;
+    }
+    const int first_error = errno;
+    std::string old_contents;
+    if (!read_text_file(path, old_contents)) {
+        logf("auth-save: commit failed errno=%d", first_error);
+        std::remove(temporary.c_str());
+        return false;
+    }
+    // Only remove an obsolete backup while the original still exists.
+    if (std::remove(backup.c_str()) != 0 && errno != ENOENT) {
+        logf("auth-save: stale backup removal failed errno=%d", errno);
+        std::remove(temporary.c_str());
+        return false;
+    }
+    if (rename_file(path.c_str(), backup.c_str()) != 0) {
+        logf("auth-save: backup rename failed errno=%d", errno);
+        std::remove(temporary.c_str());
+        return false;
+    }
+    if (rename_file(temporary.c_str(), path.c_str()) != 0) {
+        const int commit_error = errno;
+        const int rollback = rename_file(backup.c_str(), path.c_str());
+        logf("auth-save: replacement failed errno=%d rollback=%d", commit_error, rollback);
+        std::remove(temporary.c_str());
+        return false;
+    }
+    std::remove(backup.c_str());
+    log_line("auth-save: session committed with SD replacement fallback");
     return true;
 }
 
@@ -349,7 +385,8 @@ bool AuthStore::load(std::string* error_message) {
     }
 
     std::string raw;
-    if (!read_text_file(default_auth_session_path(), raw)) {
+    if (!read_text_file(default_auth_session_path(), raw) &&
+        !read_text_file(default_auth_session_path() + ".bak", raw)) {
         this->loaded_ = true;
         this->session_ = {};
         if (error_message) {
@@ -467,6 +504,13 @@ bool AuthStore::import_from_file(const std::string& file_path, std::string* erro
 
 bool AuthStore::clear(std::string* error_message) {
     std::lock_guard<std::mutex> lock(this->mutex_);
+    // Remove recovery copies first, otherwise the next load could restore login.
+    for (const auto& suffix : {".bak", ".tmp"}) {
+        if (std::remove((default_auth_session_path() + suffix).c_str()) != 0 && errno != ENOENT) {
+            if (error_message) *error_message = "Cannot remove session recovery file";
+            return false;
+        }
+    }
     const int rc = std::remove(default_auth_session_path().c_str());
     if (rc != 0) {
         std::ifstream existing(default_auth_session_path());
@@ -532,7 +576,7 @@ bool AuthStore::persist_session(std::string* error_message) {
 
     if (!write_text_file(default_auth_session_path(), root.dump(2))) {
         if (error_message) {
-            *error_message = "Cannot save session; check free space and SD permissions";
+            *error_message = "Cannot save session. Check auth-save diagnostics in app.log";
         }
         return false;
     }
