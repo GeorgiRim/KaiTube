@@ -6,7 +6,7 @@ Experimental native YouTube client for **Nintendo Switch 2**, by **Sank-kab**. B
 
 ## Status
 
-Beta **0.0.1**, SDK **20261114** migration branch (awaiting console validation). The developer reports successful console testing of the uploaded beta. This repository removes unused proprietary font/demo assets from the resource bundle; that packaging change needs a fresh console test before a binary release. No release binary is currently provided.
+Beta **0.0.1**, built with public ounce-devkit **20261114**. The developer reports that the cleaned build works on the console and that account access works after freshly reimporting cookies. The SD session-replacement fix is included. Host checks passed on GitHub Actions. Static binary inspection is documented in [BINARY-AUDIT.md](BINARY-AUDIT.md); this is not a guarantee of bug-free operation or an exhaustive security/legal audit.
 
 ## Features
 
@@ -32,9 +32,9 @@ Copy the NRO to `/switch/` on your SD. Keep a working backup. Existing settings 
 
 ## Account setup
 
-Use a private desktop-browser window with only the intended YouTube account signed in. Confirm Home and subscriptions work there. Export the YouTube cookies to `/switch/kaitube_native_auth.txt` on the SD. Supported formats: Cookie header value, JSON cookie_header/cookies/array, Netscape cookies.txt. Open Settings → YouTube cookies → Import cookies, then restart KaiTube.
+Follow the **[step-by-step Firefox cookie guide and troubleshooting](docs/COOKIES.md)**. It explains exporting without an extension, using a clean single-account session, the exact SD path, how to confirm import success, and how to diagnose save/session errors.
 
-Cookies are login credentials. Never send them to anyone or include them in issues, screenshots or releases. They are stored unencrypted on the SD in `/switch/kaitube_native_session.json`. Delete the import file after importing. To sign out, disconnect in settings, remove the import file and restart. Existing working sessions do not need reimporting after an update.
+Cookies are credentials and are stored unencrypted on SD. Never share cookies, session JSON or their backup/temporary files. A Google OAuth client is not required.
 
 ## Player controls
 

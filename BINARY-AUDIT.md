@@ -1,11 +1,17 @@
-# Uploaded beta binary inspection
+# Validated beta candidate
 
-SHA-256: `a4e9e1de27b5ad8b78bf25f17263e5035c39baaedc97627561e9d28412ec6a2d`
+File supplied by the developer: `KaiTube-cookie-fix.nro` (release name may be `KaiTube-beta0.0.1.nro`; renaming does not alter its bytes).
 
-Size: 56,078,870 bytes. NACP: KaiTube / Sank-kab / beta0.0.1.
+- SHA-256: `2e87e5ad26a92f73c0bc10a7228d6b41426ab9fb10e65e6fbc95c15c24b26dac`
+- Size: 47,938,914 bytes
+- NACP: KaiTube / Sank-kab / beta0.0.1
+- SDK build source pin: ounce-devkit 20261114
+- SD replacement-fallback diagnostic string: present
 
-Static inspection of the NRO byte stream and its RomFS manifest found no recognizable Google OAuth tokens/client IDs, GitHub tokens, actual SAPISID cookie assignments, complete PEM private keys, or the developer's known personal email/Ubuntu username. Session filenames and authentication code strings are expected application code, not saved sessions. PEM begin markers were library parser strings without complete private keys. Third-party maintainer email addresses and toolchain build paths are present.
+Static inspection parsed the NRO assets and RomFS directory structure and scanned the binary for recognizable OAuth tokens/client IDs, Google API keys, GitHub tokens, populated session-cookie assignments, complete PEM private keys and the developer's known personal identifiers. None were detected. PEM begin markers are library parser strings without complete private keys. Maintainer email addresses and devkitPro build paths are third-party attribution/toolchain strings.
 
-The uploaded binary embeds Nintendo/Morisawa font files and unused Borealis demo assets. Redistribution permission was not established, so this binary has not been added to the repository. Source packaging has been cleaned; rebuild and test it before release.
+RomFS contains application UI/XML/translations, icons, system status images, public CA certificates, sample catalog data, and DejaVu/Material font assets with notices. No imported cookie/session files, OAuth configuration or personal logs were found. The previous Nintendo/Morisawa font binaries are absent from both the resource manifest and exact-byte search of the complete NRO; Pokémon demo images are absent from the manifest.
 
-Pattern scans cannot prove absence of every possible secret, identify all arbitrary opaque values, or replace a complete license/security review. This report applies only to the hash above.
+The developer reports successful console operation and successful cookie login after fresh import. Console behavior was not independently tested by the repository-preparation assistant. Host cookie-save/rollback/recovery, captions, resume, UMP and resource checks passed; the SDK migration/fix commits also passed GitHub Actions.
+
+These findings apply only to the hash above. Static pattern searches cannot identify every possible opaque secret or certify all licensing/security properties. Keep corresponding source, dependency sources/build scripts and applicable notices available when distributing this GPL-based binary. Do not distribute the earlier binary identified by hash a4e9e1de27b5ad8b78bf25f17263e5035c39baaedc97627561e9d28412ec6a2d: it contained the removed font/demo assets.
