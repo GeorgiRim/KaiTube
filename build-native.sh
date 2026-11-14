@@ -20,12 +20,12 @@ rm -f output/KaiTube-beta0.0.1.nro
 set +e
 (
     set -e
-    "${DOCKER[@]}" build -f scripts/Dockerfile.native -t kaitube-native-sdk:20261113 .
-    "${DOCKER[@]}" run --rm -v "$PWD:/work" -w /work kaitube-native-sdk:20261113 bash scripts/build-app.sh
+    "${DOCKER[@]}" build -f scripts/Dockerfile.native -t kaitube-native-sdk:20261114 .
+    "${DOCKER[@]}" run --rm -v "$PWD:/work" -w /work kaitube-native-sdk:20261114 bash scripts/build-app.sh
 ) 2>&1 | tee output/logs/build-native.log
 result=${PIPESTATUS[0]}
 set -e
-"${DOCKER[@]}" run --rm -v "$PWD:/work" kaitube-native-sdk:20261113 chown -R "$(id -u):$(id -g)" /work/output /work/cmake-build-switch2 /work/.build-native-generator 2>/dev/null || true
+"${DOCKER[@]}" run --rm -v "$PWD:/work" kaitube-native-sdk:20261114 chown -R "$(id -u):$(id -g)" /work/output /work/cmake-build-switch2 /work/.build-native-generator 2>/dev/null || true
 if [[ "$result" != 0 ]]; then
     echo 'Build interrotta. Invia output/logs/build-native.log.' >&2
     exit "$result"

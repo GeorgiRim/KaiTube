@@ -1,10 +1,9 @@
 {
-  "version": "20261113",
-  "kaihen": "0.0.4",
-  "sha256": "30d28d0909a0a60b4de87930d773ac9770530d70a1b9b3acd3b0491579368a9b",
+  "version": "20261114",
+  "sha256": "f24d5773b1ee1c2b19317f57e8ae54a60fcdcefe493a0e495297c241c4912f59",
   "components": [
-    "libounce db3f88a3",
-    "ouncevk 791c34e",
-    "ouncehen 9451c44"
+    "libounce 9382b1ec48ac",
+    "ouncevk f5afcd27a98d",
+    "kaihen eb81e1912586"
   ]
 }

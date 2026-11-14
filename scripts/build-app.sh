@@ -14,7 +14,7 @@ python3 - <<'PYSDK'
 import hashlib,shutil
 from pathlib import Path
 build=Path('cmake-build-switch2'); marker=build/'.sdk-sha256'
-sha=hashlib.sha256(Path('sdk/ounce-sdk.tar.xz').read_bytes()).hexdigest()
+sha=hashlib.sha256(Path('sdk/ounce-devkit-20261114.tar.xz').read_bytes()).hexdigest()
 if build.exists() and (not marker.exists() or marker.read_text().strip()!=sha):
     print('SDK changed: discarding the previous Switch 2 build directory')
     shutil.rmtree(build)
@@ -33,5 +33,5 @@ mkdir -p output
 cp cmake-build-switch2/switch_newpipe.nro output/KaiTube-beta0.0.1.nro
 cp cmake-build-switch2/kaitube-native.map output/
 cp cmake-build-switch2/switch_newpipe.elf output/KaiTube-Native.elf
-cp /opt/devkitpro/ounce-sdk-version.txt output/
+cp /opt/devkitpro/ounce-devkit-version.txt output/
 sha256sum output/KaiTube-beta0.0.1.nro | tee output/SHA256SUMS

@@ -15,3 +15,6 @@ __pycache__/
 *kaitube_native_session*
 *google-client.json
 account.json
+
+/sdk/*.tar.xz
+/sdk/*.part

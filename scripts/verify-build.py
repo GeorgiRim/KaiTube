@@ -14,8 +14,8 @@ for lib in ('EGL', 'GLESv2', 'glapi', 'drm_nouveau', 'vulkan'):
 print('Build target checked: __SWITCH2__ and libounce archive.')
 
 expected=json.loads(Path('sdk/build-sdk.json').read_text())
-installed=Path('/opt/devkitpro/ounce-sdk-version.txt').read_text().splitlines()
-assert installed[0]=='ounce-sdk '+expected['version'], 'Unexpected installed SDK version'
+installed=Path('/opt/devkitpro/ounce-devkit-version.txt').read_text().splitlines()
+assert installed[0]=='ounce-devkit '+expected['version'], 'Unexpected installed SDK version'
 for component in expected['components']: assert component in installed, 'Unexpected SDK component: '+component
 print('Installed SDK and component versions checked:', expected['version'])
 

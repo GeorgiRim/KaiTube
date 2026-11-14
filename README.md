@@ -2,11 +2,11 @@
 
 <p align="center"><img src="resources/icon/icon.jpg" width="160" alt="KaiTube"></p>
 
-Experimental native YouTube client for **Nintendo Switch 2**, by **Sank-kab**. Based on [switch-newpipe](https://github.com/mirusu400/switch-newpipe) and its dependencies. Requires KaiHEN compatible with ounce-sdk **20261113**.
+Experimental native YouTube client for **Nintendo Switch 2**, by **Sank-kab**. Based on [switch-newpipe](https://github.com/mirusu400/switch-newpipe) and its dependencies. Requires KaiHEN compatible with ounce-devkit **20261114**.
 
 ## Status
 
-Beta **0.0.1**. The developer reports successful console testing of the uploaded beta. This repository removes unused proprietary font/demo assets from the resource bundle; that packaging change needs a fresh console test before a binary release. No release binary is currently provided.
+Beta **0.0.1**, SDK **20261114** migration branch (awaiting console validation). The developer reports successful console testing of the uploaded beta. This repository removes unused proprietary font/demo assets from the resource bundle; that packaging change needs a fresh console test before a binary release. No release binary is currently provided.
 
 ## Features
 
@@ -19,9 +19,10 @@ Authenticated feeds load up to 96 items and at most seven continuation pages. Ac
 
 ## Build
 
-On Linux, install Docker and Python 3. Clone this repository, supply the matching SDK as described in [sdk/README.md](sdk/README.md), then run:
+On Linux, install Docker and Python 3. Clone this repository, then download the pinned public SDK and build:
 
 ```bash
+bash scripts/download-sdk.sh
 bash build.sh
 ```
 

@@ -139,7 +139,7 @@ int main(int argc, char* argv[]) {
     (void) argv;
 
     newpipe::init_log();
-    newpipe::log_line("KaiTube beta0.0.1 / SDK 20261113 / audio-master + native video");
+    newpipe::log_line("KaiTube beta0.0.1 / SDK 20261114 / audio-master + native video");
 #ifdef __SWITCH__
     kaitubeInitAbortLog();
     if (std::freopen(KAITUBE_STDERR_LOG, "w", stderr))

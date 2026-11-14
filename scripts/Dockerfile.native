@@ -1,8 +1,8 @@
 FROM devkitpro/devkita64:20260219
 RUN apt-get update && apt-get install -y --no-install-recommends meson ninja-build cmake g++ curl patch ca-certificates python3 && rm -rf /var/lib/apt/lists/*
 RUN dkp-pacman -Syu --noconfirm && dkp-pacman -S --needed --noconfirm switch-dev switch-cmake switch-pkg-config dkp-toolchain-vars switch-zlib switch-bzip2 switch-mbedtls switch-sdl2 switch-curl switch-mesa switch-freetype
-COPY sdk/ounce-sdk.tar.xz sdk/SDK.sha256 /tmp/
-RUN cd /tmp && sha256sum -c SDK.sha256 && tar -xJf ounce-sdk.tar.xz -C /opt/devkitpro && rm ounce-sdk.tar.xz SDK.sha256
+COPY sdk/ounce-devkit-20261114.tar.xz sdk/SDK.sha256 /tmp/
+RUN cd /tmp && sha256sum -c SDK.sha256 && tar -xJf ounce-devkit-20261114.tar.xz -C /opt/devkitpro && rm ounce-devkit-20261114.tar.xz SDK.sha256
 COPY vendor/switch-portlibs /build-support/portlibs
 RUN bash /build-support/portlibs/build_custom_portlibs.sh --skip-app --skip-mpv
 COPY scripts/switch2.ini /build-support/switch2.ini
