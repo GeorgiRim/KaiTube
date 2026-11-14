@@ -6,7 +6,7 @@ Experimental native YouTube client for **Nintendo Switch 2**, by **Sank-kab**. B
 
 ## Status
 
-Beta **0.0.2** release preparation, built with public ounce-devkit **20261114**. Includes the Home refresh/category fix, which the developer tested on-console before the version bump, and the SD session-replacement fix. The new versioned NRO still needs its final build, smoke test and binary inspection before publishing a 0.0.2 release. [BINARY-AUDIT.md](BINARY-AUDIT.md) currently documents the historical 0.0.1 binary only.
+Beta **0.0.2**, built with public ounce-devkit **20261114**. Includes the Home refresh/category fix and the SD session-replacement fix. The developer reports successful console smoke testing of the versioned 0.0.2 build. Host checks passed on GitHub Actions. The exact binary hash and static inspection findings are documented in [BINARY-AUDIT.md](BINARY-AUDIT.md).
 
 ## Features
 

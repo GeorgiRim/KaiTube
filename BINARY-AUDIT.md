@@ -1,3 +1,20 @@
+# Binary audit: beta0.0.2
+
+- Filename: `KaiTube-beta0.0.2.nro`
+- SHA-256: `6c6b57dbf16629d864135761f31c9f4410fdef9ffd66db7ff0af47a08e2c5c6a`
+- Size: 47,938,914 bytes
+- Uploaded SHA256SUMS: exact hash and filename match
+- NACP: KaiTube / Sank-kab / beta0.0.2
+- Home refresh and SD replacement-fallback diagnostic strings: present
+- RomFS: 55 entries, no cookie/session files, OAuth config, personal logs or Pokemon demo resources found
+- Nintendo/Morisawa font copies: absent from manifest and exact-byte binary scan
+- Recognizable Google OAuth tokens/client IDs, GitHub tokens and populated authentication-cookie assignments: none detected
+- Developer's known email/Ubuntu username: not detected
+
+The developer reports that the new build works correctly on the console. GitHub Actions passed for the source/version commit c1c808be6d035b734709e84fe40fc6548fa71fc1. Static inspection is not an independent console test or an exhaustive security/legal certification; arbitrary opaque secrets cannot all be recognized by pattern scans. Findings apply only to the hash above. Preserve applicable source/license obligations when distributing.
+
+---
+
 # Historical binary audit: beta0.0.1
 
 This report applies only to the 0.0.1 hash below. A beta0.0.2 NRO has not yet been submitted for final inspection. Do not use the old checksum for a new build; output/SHA256SUMS is regenerated after a successful build.
