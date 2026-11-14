@@ -50,7 +50,7 @@ void HomeTab::onCreate() {
   this->registerTabAction(newpipe::tr("common/refresh"),
                           brls::ControllerButton::BUTTON_X,
                           [this](brls::View *) {
-                            loadHome();
+                            loadHome(true);
                             return true;
                           });
   this->registerTabAction(newpipe::tr("home/category_action"),
@@ -61,8 +61,12 @@ void HomeTab::onCreate() {
                           });
 }
 
-void HomeTab::loadHome() {
-  if (newpipe::restore_video_focus && newpipe::ui_tab==0 && !cached_items.empty()) {
+void HomeTab::loadHome(bool forceRefresh) {
+  if (forceRefresh) {
+    newpipe::restore_video_focus = false;
+    newpipe::log_line("home: explicit refresh, requesting fresh feed");
+  }
+  if (!forceRefresh && newpipe::restore_video_focus && newpipe::ui_tab==0 && !cached_items.empty()) {
     items_=cached_items;initialLoadCompleted_=true;interactionReady_=true;buildGrid();
     if(spinner)spinner->setVisibility(brls::Visibility::GONE);return;
   }
@@ -223,7 +227,7 @@ void HomeTab::cycleKiosk() {
   kioskIndex_ = (kioskIndex_ + 1) % kiosks_.size();
   newpipe::logf("home: cycleKiosk newIndex=%zu id=%s", kioskIndex_,
                 kiosks_[kioskIndex_].id.c_str());
-  loadHome();
+  loadHome(true);
 }
 
 bool HomeTab::allowInitialInput() const {

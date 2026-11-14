@@ -21,7 +21,7 @@ public:
     static brls::View* create() { return new HomeTab(); }
 
 private:
-    void loadHome();
+    void loadHome(bool forceRefresh = false);
     void scheduleLoadHome(long delay_ms);
     void buildGrid();
     void cycleKiosk();
