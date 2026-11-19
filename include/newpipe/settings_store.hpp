@@ -3,6 +3,7 @@
 #include <mutex>
 #include <string>
 
+#include "newpipe/http_proxy.hpp"
 #include "newpipe/youtube_resolver.hpp"
 
 namespace newpipe {
@@ -13,6 +14,7 @@ struct AppSettings {
     std::string home_kiosk = "recommended";
     PlaybackQualityMode playback_quality = PlaybackQualityMode::LOW_320;
     bool hide_short_videos = false;
+    HttpProxy http_proxy;
 };
 
 std::string default_settings_store_path();
@@ -32,13 +34,14 @@ public:
         PlaybackQualityMode playback_quality,
         std::string* error_message = nullptr);
     bool update_hide_short_videos(bool hide_short_videos, std::string* error_message = nullptr);
+    bool update_http_proxy(const HttpProxy& proxy, std::string* error_message = nullptr);
     bool reset(std::string* error_message = nullptr);
 
 private:
     SettingsStore() = default;
 
-    bool ensure_loaded(std::string* error_message);
-    bool persist(std::string* error_message);
+    bool load_locked(std::string* error_message);
+    bool persist_locked(const AppSettings& next, std::string* error_message);
 
     mutable std::mutex mutex_;
     bool loaded_ = false;

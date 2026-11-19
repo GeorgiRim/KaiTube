@@ -37,6 +37,7 @@ bool write_text_file(const std::string& path, const std::string& contents) {
     }
 
     output.write(contents.data(), static_cast<std::streamsize>(contents.size()));
+    output.close();
     return output.good();
 }
 
@@ -92,6 +93,7 @@ json serialize_settings(const AppSettings& settings) {
         {"home_kiosk", settings.home_kiosk},
         {"playback_quality", static_cast<int>(settings.playback_quality)},
         {"hide_short_videos", settings.hide_short_videos},
+        {"http_proxy", settings.http_proxy.url()},
     };
 }
 
@@ -103,6 +105,7 @@ AppSettings deserialize_settings(const json& root) {
     settings.playback_quality =
         sanitize_playback_quality(root.value("playback_quality", 3));
     settings.hide_short_videos = root.value("hide_short_videos", false);
+    settings.http_proxy = HttpProxy::parse(get_string(root, "http_proxy")).value_or(HttpProxy{});
     return settings;
 }
 
@@ -123,6 +126,10 @@ SettingsStore& SettingsStore::instance() {
 
 bool SettingsStore::load(std::string* error_message) {
     std::lock_guard<std::mutex> lock(this->mutex_);
+    return this->load_locked(error_message);
+}
+
+bool SettingsStore::load_locked(std::string* error_message) {
     if (this->loaded_) {
         if (error_message) {
             error_message->clear();
@@ -174,117 +181,76 @@ bool SettingsStore::reload(std::string* error_message) {
 }
 
 AppSettings SettingsStore::settings() {
-    std::string error;
-    this->ensure_loaded(&error);
     std::lock_guard<std::mutex> lock(this->mutex_);
+    this->load_locked(nullptr);
     return this->settings_;
 }
 
 bool SettingsStore::update_language(const std::string& language, std::string* error_message) {
-    if (!this->ensure_loaded(error_message)) {
-        return false;
-    }
-
-    {
-        std::lock_guard<std::mutex> lock(this->mutex_);
-        this->settings_.language = sanitize_language(language);
-    }
-
-    return this->persist(error_message);
+    std::lock_guard<std::mutex> lock(this->mutex_);
+    if (!this->load_locked(error_message)) return false;
+    auto next = this->settings_;
+    next.language = sanitize_language(language);
+    return this->persist_locked(next, error_message);
 }
 
 bool SettingsStore::update_startup_tab(const std::string& startup_tab, std::string* error_message) {
-    if (!this->ensure_loaded(error_message)) {
-        return false;
-    }
-
-    {
-        std::lock_guard<std::mutex> lock(this->mutex_);
-        this->settings_.startup_tab = sanitize_startup_tab(startup_tab);
-    }
-
-    return this->persist(error_message);
+    std::lock_guard<std::mutex> lock(this->mutex_);
+    if (!this->load_locked(error_message)) return false;
+    auto next = this->settings_;
+    next.startup_tab = sanitize_startup_tab(startup_tab);
+    return this->persist_locked(next, error_message);
 }
 
 bool SettingsStore::update_home_kiosk(const std::string& home_kiosk, std::string* error_message) {
-    if (!this->ensure_loaded(error_message)) {
-        return false;
-    }
-
-    {
-        std::lock_guard<std::mutex> lock(this->mutex_);
-        this->settings_.home_kiosk = sanitize_home_kiosk(home_kiosk);
-    }
-
-    return this->persist(error_message);
+    std::lock_guard<std::mutex> lock(this->mutex_);
+    if (!this->load_locked(error_message)) return false;
+    auto next = this->settings_;
+    next.home_kiosk = sanitize_home_kiosk(home_kiosk);
+    return this->persist_locked(next, error_message);
 }
 
 bool SettingsStore::update_playback_quality(
     PlaybackQualityMode playback_quality,
     std::string* error_message) {
-    if (!this->ensure_loaded(error_message)) {
-        return false;
-    }
-
-    {
-        std::lock_guard<std::mutex> lock(this->mutex_);
-        this->settings_.playback_quality = sanitize_playback_quality(static_cast<int>(playback_quality));
-    }
-
-    return this->persist(error_message);
+    std::lock_guard<std::mutex> lock(this->mutex_);
+    if (!this->load_locked(error_message)) return false;
+    auto next = this->settings_;
+    next.playback_quality = sanitize_playback_quality(static_cast<int>(playback_quality));
+    return this->persist_locked(next, error_message);
 }
 
 bool SettingsStore::update_hide_short_videos(bool hide_short_videos, std::string* error_message) {
-    if (!this->ensure_loaded(error_message)) {
-        return false;
-    }
+    std::lock_guard<std::mutex> lock(this->mutex_);
+    if (!this->load_locked(error_message)) return false;
+    auto next = this->settings_;
+    next.hide_short_videos = hide_short_videos;
+    return this->persist_locked(next, error_message);
+}
 
-    {
-        std::lock_guard<std::mutex> lock(this->mutex_);
-        this->settings_.hide_short_videos = hide_short_videos;
-    }
-
-    return this->persist(error_message);
+bool SettingsStore::update_http_proxy(const HttpProxy& proxy, std::string* error_message) {
+    std::lock_guard<std::mutex> lock(this->mutex_);
+    if (!this->load_locked(error_message)) return false;
+    auto next = this->settings_;
+    next.http_proxy = proxy;
+    return this->persist_locked(next, error_message);
 }
 
 bool SettingsStore::reset(std::string* error_message) {
-    if (!this->ensure_loaded(error_message)) {
-        return false;
-    }
-
-    {
-        std::lock_guard<std::mutex> lock(this->mutex_);
-        this->settings_ = AppSettings{};
-    }
-
-    return this->persist(error_message);
+    std::lock_guard<std::mutex> lock(this->mutex_);
+    if (!this->load_locked(error_message)) return false;
+    return this->persist_locked(AppSettings{}, error_message);
 }
 
-bool SettingsStore::ensure_loaded(std::string* error_message) {
-    if (this->loaded_) {
-        if (error_message) {
-            error_message->clear();
-        }
-        return true;
-    }
-
-    return this->load(error_message);
-}
-
-bool SettingsStore::persist(std::string* error_message) {
-    json root;
-    {
-        std::lock_guard<std::mutex> lock(this->mutex_);
-        root = serialize_settings(this->settings_);
-    }
-
-    if (!write_text_file(default_settings_store_path(), root.dump(2))) {
+bool SettingsStore::persist_locked(const AppSettings& next, std::string* error_message) {
+    if (!write_text_file(default_settings_store_path(), serialize_settings(next).dump(2))) {
         if (error_message) {
             *error_message = newpipe::ui("설정 저장 실패");
         }
         return false;
     }
 
+    this->settings_ = next;
     if (error_message) {
         error_message->clear();
     }

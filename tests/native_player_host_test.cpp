@@ -29,7 +29,8 @@ int main(int argc, char **argv) {
   SDL_Window *window = SDL_CreateWindow("test", 0, 0, 640, 360, 0);
   if (!window)
     return 4;
-  bool url = std::string(argv[1]).rfind("url:", 0) == 0;
+  const bool playlist = std::string(argv[1]).rfind("playlist:", 0) == 0;
+  bool url = playlist || std::string(argv[1]).rfind("url:", 0) == 0;
   FILE *file = url ? nullptr : fopen(argv[1], "rb");
   if (!file && !url)
     return 5;
@@ -40,9 +41,10 @@ int main(int argc, char **argv) {
   if (argc > 3)
     state.start = atof(argv[3]);
   newpipe::NativeMediaInput input;
-  if (url)
-    input.url = std::string(argv[1]).substr(4);
-  else {
+  if (url) {
+    input.local_network_playlist = playlist;
+    input.url = std::string(argv[1]).substr(playlist ? 9 : 4);
+  } else {
     input.read = read_cache;
     input.seek = seek_cache;
     input.cookie = file;

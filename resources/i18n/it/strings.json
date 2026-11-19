@@ -132,6 +132,12 @@
       "enabled": "Video brevi nascosti",
       "disabled": "Video brevi visibili"
     },
+    "http_proxy": {
+      "title": "Proxy HTTP",
+      "off": "Disattivato",
+      "hint": "Inserisci host:porta o lascia vuoto per disattivare il proxy.",
+      "invalid": "Proxy non valido. Inserisci un host e una porta da 1 a 65535."
+    },
     "session": {
       "title": "Cookie YouTube",
       "load_failed": "Caricamento account non riuscito",

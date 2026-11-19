@@ -6,8 +6,9 @@
 
 #include "newpipe/log.hpp"
 #if defined(__SWITCH__) || defined(KAITUBE_HOST_CURL)
-#include <curl/curl.h>
+#include "newpipe/curl_proxy.hpp"
 #else
+#include "newpipe/settings_store.hpp"
 #define CPPHTTPLIB_OPENSSL_SUPPORT
 #include "httplib/httplib.h"
 #endif
@@ -48,6 +49,12 @@ size_t write_callback(void* contents, size_t size, size_t nmemb, void* userp) {
 #endif
 
 #if !defined(__SWITCH__) && !defined(KAITUBE_HOST_CURL)
+template <typename Client>
+void configure_proxy(Client& client) {
+    const auto proxy = SettingsStore::instance().settings().http_proxy;
+    if (!proxy.host.empty()) client.set_proxy(proxy.host, proxy.port);
+}
+
 httplib::Headers to_headers(const std::vector<HttpHeader>& headers) {
     httplib::Headers out;
     for (const auto& header : headers) {
@@ -64,9 +71,9 @@ std::optional<std::string> HttpsHttpClient::get(
     const std::vector<HttpHeader>& headers) {
 #if defined(__SWITCH__) || defined(KAITUBE_HOST_CURL)
     if (http_cancel && http_cancel->load()) return std::nullopt;
-    CURL* curl = curl_easy_init();
+    CURL* curl = create_curl_handle();
     if (!curl) {
-        log_line("http: curl_easy_init failed");
+        log_line("http: curl setup failed");
         return std::nullopt;
     }
 
@@ -122,6 +129,7 @@ std::optional<std::string> HttpsHttpClient::get(
     const auto request_headers = to_headers(headers);
     if (parsed->scheme == "https") {
         httplib::SSLClient client(parsed->host, parsed->port);
+        configure_proxy(client);
         client.set_follow_location(true);
         client.set_connection_timeout(5);
         client.set_read_timeout(5);
@@ -135,6 +143,7 @@ std::optional<std::string> HttpsHttpClient::get(
     }
 
     httplib::Client client(parsed->host, parsed->port);
+    configure_proxy(client);
     client.set_follow_location(true);
     client.set_connection_timeout(5);
     client.set_read_timeout(5);
@@ -153,9 +162,9 @@ std::optional<std::string> HttpsHttpClient::post(
     const std::vector<HttpHeader>& headers) {
 #if defined(__SWITCH__) || defined(KAITUBE_HOST_CURL)
     if (http_cancel && http_cancel->load()) return std::nullopt;
-    CURL* curl = curl_easy_init();
+    CURL* curl = create_curl_handle();
     if (!curl) {
-        log_line("http: curl_easy_init failed");
+        log_line("http: curl setup failed");
         return std::nullopt;
     }
 
@@ -214,6 +223,7 @@ std::optional<std::string> HttpsHttpClient::post(
     const auto request_headers = to_headers(headers);
     if (parsed->scheme == "https") {
         httplib::SSLClient client(parsed->host, parsed->port);
+        configure_proxy(client);
         client.set_follow_location(true);
         client.set_connection_timeout(5);
         client.set_read_timeout(30);
@@ -227,6 +237,7 @@ std::optional<std::string> HttpsHttpClient::post(
     }
 
     httplib::Client client(parsed->host, parsed->port);
+    configure_proxy(client);
     client.set_follow_location(true);
     client.set_connection_timeout(5);
     client.set_read_timeout(30);

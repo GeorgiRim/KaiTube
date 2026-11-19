@@ -213,6 +213,12 @@ SettingsTab::SettingsTab() {
                   : newpipe::tr("settings/hide_shorts/disabled"));
     });
 
+    this->proxyCell->setText(newpipe::tr("settings/http_proxy/title"));
+    this->proxyCell->registerClickAction([this](brls::View*) {
+        this->editProxy();
+        return true;
+    });
+
     this->sessionCell->setText(newpipe::tr("settings/session/title"));
     this->sessionCell->registerClickAction([this](brls::View*) {
         this->openSessionInfo();
@@ -256,10 +262,32 @@ void SettingsTab::syncFromStore() {
     this->homeKioskCell->setSelection(home_kiosk_selection(settings.home_kiosk), true);
     this->hideShortsCell->setOn(settings.hide_short_videos, false);
 
+    this->proxyCell->setDetailText(settings.http_proxy.host.empty()
+        ? newpipe::tr("settings/http_proxy/off") : settings.http_proxy.url());
     this->sessionCell->setDetailText(newpipe::tr(newpipe::AuthStore::instance().has_session()
         ? "settings/session/saved" : "settings/session/signed_out"));
 
 
+}
+
+void SettingsTab::editProxy() {
+    const auto current = newpipe::SettingsStore::instance().settings().http_proxy;
+    brls::Application::getImeManager()->openForText(
+        [this](std::string address) {
+            const auto proxy = newpipe::HttpProxy::parse(address);
+            if (!proxy) {
+                brls::Application::notify(newpipe::tr("settings/http_proxy/invalid"));
+                return;
+            }
+            std::string error;
+            if (!newpipe::SettingsStore::instance().update_http_proxy(*proxy, &error)) {
+                brls::Application::notify(error);
+                return;
+            }
+            this->syncFromStore();
+        },
+        newpipe::tr("settings/http_proxy/title"), newpipe::tr("settings/http_proxy/hint"),
+        270, current.url());
 }
 
 void SettingsTab::resetToDefaults() {

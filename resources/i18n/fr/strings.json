@@ -132,6 +132,12 @@
       "enabled": "Vidéos courtes masquées",
       "disabled": "Vidéos courtes visibles"
     },
+    "http_proxy": {
+      "title": "Proxy HTTP",
+      "off": "Désactivé",
+      "hint": "Saisissez hôte:port ou laissez le champ vide pour désactiver le proxy.",
+      "invalid": "Proxy invalide. Saisissez un hôte et un port entre 1 et 65535."
+    },
     "session": {
       "title": "Cookies YouTube",
       "load_failed": "Échec du chargement du compte",

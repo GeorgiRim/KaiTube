@@ -132,6 +132,12 @@
       "enabled": "Short videos will be hidden",
       "disabled": "Short videos will be shown again"
     },
+    "http_proxy": {
+      "title": "HTTP proxy",
+      "off": "Off",
+      "hint": "Enter host:port, or leave blank to turn off.",
+      "invalid": "Invalid proxy. Enter a host and a port from 1 to 65535."
+    },
     "session": {
       "title": "YouTube cookies",
       "load_failed": "Failed to load session",

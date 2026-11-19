@@ -22,6 +22,7 @@
             <brls:SelectorCell id="settings/startup_tab"/>
             <brls:SelectorCell id="settings/home_kiosk"/>
             <brls:BooleanCell id="settings/hide_shorts"/>
+            <brls:DetailCell id="settings/http_proxy"/>
             <brls:DetailCell id="settings/session"/>
         </brls:Box>
     </brls:ScrollingFrame>

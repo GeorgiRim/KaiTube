@@ -24,3 +24,5 @@ jobs:
           /tmp/resume-test
           g++ -std=c++17 -Iinclude -Ivendor/third_party tests/ump_test.cpp src/common/ump.cpp -o /tmp/ump-test
           /tmp/ump-test
+          g++ -std=c++17 -Iinclude -Ivendor/third_party tests/http_proxy_test.cpp src/common/{settings_store,http_proxy,log}.cpp -o /tmp/proxy-test
+          /tmp/proxy-test

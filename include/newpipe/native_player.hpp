@@ -19,6 +19,7 @@ struct NativeMediaInput {
   int64_t (*read)(void *, char *, uint64_t) = nullptr;
   int64_t (*seek)(void *, int64_t, int) = nullptr;
   void *cookie = nullptr;
+  bool local_network_playlist = false;
   std::string resume_key, thumbnail_jpeg;
   std::string url, user_agent, referer, title, quality;
   std::shared_ptr<std::atomic_bool> cancelled =

@@ -35,7 +35,7 @@ extern "C" {
 #define SDL_MAIN_HANDLED
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_opengles2.h>
-#include <curl/curl.h>
+#include "newpipe/curl_proxy.hpp"
 #include <mpv/client.h>
 #include <mpv/render.h>
 #include <mpv/render_gl.h>
@@ -510,7 +510,10 @@ public:
                   }
                   return false;
                 };
-            } else source.url = active_local_media_path_.empty() ? active_url_ : active_local_media_path_;
+            } else {
+                source.local_network_playlist = !active_local_media_path_.empty();
+                source.url = source.local_network_playlist ? active_local_media_path_ : active_url_;
+            }
             if (!active_external_audio_url_.empty()) {
                 source.audio = std::make_shared<NativeMediaInput>();
                 source.audio->cancelled = cancelled;
@@ -1059,7 +1062,9 @@ private:
         struct CachedResolution {std::string key;ResolvedPlayback value;std::chrono::steady_clock::time_point time;};
         static std::vector<CachedResolution> resolutions;
         static std::mutex resolutions_mutex;
-        const auto key=request_.url+"#"+std::to_string(preferred_height_for_quality(quality_override_.value_or(SettingsStore::instance().settings().playback_quality)));
+        const auto settings = SettingsStore::instance().settings();
+        const auto height = preferred_height_for_quality(quality_override_.value_or(settings.playback_quality));
+        const auto key = request_.url + "#" + std::to_string(height) + "#" + settings.http_proxy.url();
         std::optional<ResolvedPlayback> resolved;
         {std::lock_guard<std::mutex> lock(resolutions_mutex);for(const auto& entry:resolutions)
           if(entry.key==key && std::chrono::steady_clock::now()-entry.time<std::chrono::seconds(30)){resolved=entry.value;break;}}
@@ -1286,7 +1291,7 @@ private:
         // let playback outrun the download; each ranged request already resets
         // YouTube's throttle counter, so one connection stays un-throttled.
         const auto extra_headers = split_header_fields(active_http_header_fields_);
-        CURL* ch = curl_easy_init();
+        CURL* ch = create_curl_handle();
         if (!ch) {
             log_line("player: ranged download curl init failed");
             return false;
@@ -1428,7 +1433,7 @@ private:
         stream_abort_.store(false);
         last_progress_update_ = std::chrono::steady_clock::time_point{};
         stream_download_thread_ = std::thread([this]() {
-            CURL* curl = curl_easy_init();
+            CURL* curl = create_curl_handle();
             if (!curl) {
                 std::lock_guard<std::mutex> lock(stream_mutex_);
                 stream_download_done_ = true;
@@ -1549,7 +1554,7 @@ private:
         download_context.fd = fd;
         download_context.progress = &downloaded_bytes;
 
-        CURL* curl = curl_easy_init();
+        CURL* curl = create_curl_handle();
         if (!curl) {
             ::close(fd);
             std::remove(path.c_str());
@@ -1697,7 +1702,7 @@ private:
         pending_external_audio_attach_ = true;
         logf("player: start audio prefetch kind=split-audio url=%s", source_url.c_str());
         audio_download_thread_ = std::thread([this, source_url, source_referer, source_headers, source_use_ump]() {
-            CURL* curl = curl_easy_init();
+            CURL* curl = create_curl_handle();
             if (!curl) {
                 audio_download_success_.store(false);
                 audio_download_error_ = "audio curl init failed";
@@ -1824,7 +1829,7 @@ private:
                                 std::this_thread::sleep_for(std::chrono::milliseconds(1000 * retry));
                             }
 
-                            CURL* ch = curl_easy_init();
+                            CURL* ch = create_curl_handle();
                             if (!ch) break;
                             struct curl_slist* ch_headers = nullptr;
                             for (const auto& h : extra_headers) {
@@ -2108,13 +2113,18 @@ private:
         option("keep-open", "yes");
         option("force-seekable", "no");
         option("ytdl", "no");
+        const auto proxy = SettingsStore::instance().settings().http_proxy.url();
+        if (!proxy.empty() && option("http-proxy", proxy.c_str()) < 0) {
+            error = "mpv HTTP proxy setup failed";
+            return false;
+        }
         option("tls-verify", "yes");
         option("tls-ca-file", "romfs:/certs/cacert.pem");
         option("access-references", "yes");
         if (!active_local_media_path_.empty()) {
             option("load-unsafe-playlists", "yes");
             option(
-                "demuxer-lavf-o", "protocol_whitelist=file,http,https,tcp,tls,crypto,data,subfile");
+                "demuxer-lavf-o", "protocol_whitelist=file,http,https,httpproxy,tcp,tls,crypto,data,subfile");
         }
         const bool is_hls = contains_case_insensitive(active_quality_label_, "hls");
         if (is_hls) {
@@ -2125,7 +2135,7 @@ private:
             option("load-unsafe-playlists", "yes");
             option(
                 "demuxer-lavf-o",
-                "protocol_whitelist=file,http,https,tcp,tls,crypto,data,subfile");
+                "protocol_whitelist=file,http,https,httpproxy,tcp,tls,crypto,data,subfile");
             // The visionOS HLS master offers original + AI-dubbed audio with no
             // DEFAULT; prefer the original language so mpv doesn't pick the dub.
             if (!active_audio_language_.empty()) {
@@ -2135,7 +2145,7 @@ private:
         }
         if (use_stream_bridge_) {
             option(
-                "demuxer-lavf-o", "protocol_whitelist=file,http,https,tcp,tls,crypto,data,switchcache");
+                "demuxer-lavf-o", "protocol_whitelist=file,http,https,httpproxy,tcp,tls,crypto,data,switchcache");
         }
         // Use Android UA for YouTube CDN to avoid rejection
         const bool is_youtube_stream = contains_case_insensitive(active_url_, "googlevideo.com")

@@ -30,6 +30,10 @@ Output: `output/KaiTube-beta0.0.2.nro`. Build log: `output/logs/build-native.log
 
 Copy the NRO to `/switch/` on your SD. Keep a working backup. Existing settings and session paths are preserved.
 
+## Proxy
+
+Open **Settings → HTTP proxy** and enter the IPv4 address or hostname and port of an HTTP proxy that the console can reach, for example `192.168.1.10:8080`. The setting applies to new catalog, thumbnail and playback requests. The proxy must accept HTTPS tunnels (CONNECT) without authentication. Clear the field to restore the default connection. The app saves this setting on the SD card.
+
 ## Account setup
 
 Follow the **[step-by-step Firefox cookie guide and troubleshooting](docs/COOKIES.md)**. It explains exporting without an extension, using a clean single-account session, the exact SD path, how to confirm import success, and how to diagnose save/session errors.

@@ -7,6 +7,7 @@ flags=$(pkg-config --cflags --libs sdl2 libavformat libavcodec libavfilter libav
 ${CXX:-g++} -std=c++17 -O1 -DKAITUBE_HOST_CURL -Iinclude -Ivendor/third_party -Ivendor/borealis/library/include \
     tests/native_player_host_test.cpp src/switch/native_player.cpp src/switch/native_text.cpp \
     src/switch/audio_sink.cpp src/common/log.cpp src/common/captions.cpp src/common/http_client.cpp \
+    src/common/settings_store.cpp src/common/http_proxy.cpp \
     $flags -pthread -o build/host/native_player_test
 fixture="$PWD/build/host/native-fixtures"
 ffmpeg -y -v error -f lavfi -i testsrc2=size=320x180:rate=24 -f lavfi -i sine=frequency=440:sample_rate=48000 \
@@ -19,3 +20,4 @@ timeout 12 build/host/native_player_test "$fixture/muxed.mp4" 1 0
 timeout 12 build/host/native_player_test "$fixture/muxed.mp4" 1.5 1
 timeout 12 build/host/native_player_test "$fixture/video.mp4" 0.75 0 "$fixture/audio.m4a"
 timeout 12 build/host/native_player_test "url:$fixture/local.m3u8" 1 0
+python3 tests/native_proxy_test.py build/host/native_player_test "$fixture"

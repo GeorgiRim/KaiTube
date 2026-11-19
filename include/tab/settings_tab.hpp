@@ -13,11 +13,13 @@ private:
     void syncFromStore();
     void resetToDefaults();
     void openSessionInfo();
+    void editProxy();
 
     BRLS_BIND(brls::SelectorCell, languageCell, "settings/language");
     BRLS_BIND(brls::SelectorCell, playbackQualityCell, "settings/playback_quality");
     BRLS_BIND(brls::SelectorCell, startupTabCell, "settings/startup_tab");
     BRLS_BIND(brls::SelectorCell, homeKioskCell, "settings/home_kiosk");
     BRLS_BIND(brls::BooleanCell, hideShortsCell, "settings/hide_shorts");
+    BRLS_BIND(brls::DetailCell, proxyCell, "settings/http_proxy");
     BRLS_BIND(brls::DetailCell, sessionCell, "settings/session");
 };

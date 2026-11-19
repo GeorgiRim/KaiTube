@@ -132,6 +132,12 @@
       "enabled": "Kurze Videos ausgeblendet",
       "disabled": "Kurze Videos sichtbar"
     },
+    "http_proxy": {
+      "title": "HTTP-Proxy",
+      "off": "Aus",
+      "hint": "Host:Port eingeben oder zum Ausschalten leer lassen.",
+      "invalid": "Ungültiger Proxy. Host und Port zwischen 1 und 65535 eingeben."
+    },
     "session": {
       "title": "YouTube-Cookies",
       "load_failed": "Konto nicht geladen",

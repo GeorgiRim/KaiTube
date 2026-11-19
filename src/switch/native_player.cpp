@@ -4,6 +4,7 @@
 #include "newpipe/resume_store.hpp"
 #include "newpipe/audio_sink.hpp"
 #include "newpipe/http_client.hpp"
+#include "newpipe/settings_store.hpp"
 #include "newpipe/log.hpp"
 #include "newpipe/native_text.hpp"
 #include <SDL2/SDL.h>
@@ -163,11 +164,36 @@ struct Input {
   static int interrupt(void *p) {
     return static_cast<Input *>(p)->stop->load() ? 1 : 0;
   }
+  std::string proxy_url;
+  decltype(AVFormatContext::io_open) default_io_open = nullptr;
+
+  // Local HLS masters have no HTTP options for FFmpeg to copy to their
+  // playlists and segments. Apply the proxy each time the demuxer opens IO.
+  static int open_with_proxy(AVFormatContext *ctx, AVIOContext **pb, const char *url,
+                             int flags, AVDictionary **options) {
+    auto &input = *static_cast<Input *>(ctx->opaque);
+    AVDictionary *local = nullptr;
+    auto **opts = options ? options : &local;
+    int rc = av_dict_set(opts, "http_proxy", input.proxy_url.c_str(), 0);
+    if (rc >= 0) rc = av_dict_set(opts, "tls_verify", "1", 0);
+#ifdef __SWITCH__
+    if (rc >= 0) rc = av_dict_set(opts, "ca_file", "romfs:/certs/cacert.pem", 0);
+#endif
+    if (rc >= 0) rc = input.default_io_open(ctx, pb, url, flags, opts);
+    av_dict_free(&local);
+    return rc;
+  }
   bool open(std::string &error) {
     format = avformat_alloc_context();
     if (!format) {
       error = "No demux memory";
       return false;
+    }
+    proxy_url = SettingsStore::instance().settings().http_proxy.url();
+    if (!proxy_url.empty()) {
+      format->opaque = this;
+      default_io_open = format->io_open;
+      format->io_open = open_with_proxy;
     }
     format->interrupt_callback = {interrupt, this};
     format->probesize = 1024 * 1024;
@@ -192,6 +218,8 @@ struct Input {
       format->flags |= AVFMT_FLAG_CUSTOM_IO;
     }
     AVDictionary *options = nullptr;
+    if (source.local_network_playlist)
+      av_dict_set(&options, "protocol_whitelist", "file,http,https,httpproxy,tcp,tls,crypto,data", 0);
     av_dict_set(&options, "tls_verify", "1", 0);
     av_dict_set(&options, "probesize", "1048576", 0);
     av_dict_set(&options, "analyzeduration", "1500000", 0);
