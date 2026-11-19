@@ -9,7 +9,32 @@
 #include "newpipe/log.hpp"
 #include "newpipe/settings_store.hpp"
 
+#ifdef __SWITCH__
+#include <switch.h>
+#endif
+
 namespace {
+
+void enter_proxy_password(std::function<void(std::string)> submit) {
+    const auto title = newpipe::tr("settings/http_proxy/password");
+#ifdef __SWITCH__
+    SwkbdConfig config{};
+    if (R_FAILED(swkbdCreate(&config, 0))) {
+        brls::Application::notify(newpipe::tr("settings/http_proxy/keyboard_failed"));
+        return;
+    }
+    swkbdConfigMakePresetPassword(&config);
+    swkbdConfigSetHeaderText(&config, title.c_str());
+    swkbdConfigSetStringLenMax(&config, newpipe::HttpProxy::max_credential_bytes);
+    char buffer[0x1000]{};
+    const auto result = swkbdShow(&config, buffer, sizeof(buffer));
+    swkbdClose(&config);
+    if (R_SUCCEEDED(result)) submit(buffer);
+#else
+    brls::Application::getImeManager()->openForText(
+        submit, title, "", newpipe::HttpProxy::max_credential_bytes);
+#endif
+}
 
 const std::vector<std::string> language_codes={"auto","it","en-US","fr","de","es","pt","ko"};
 int language_selection(const std::string& value) {
@@ -219,6 +244,12 @@ SettingsTab::SettingsTab() {
         return true;
     });
 
+    this->proxyLoginCell->setText(newpipe::tr("settings/http_proxy/login"));
+    this->proxyLoginCell->registerClickAction([this](brls::View*) {
+        this->editProxyLogin();
+        return true;
+    });
+
     this->sessionCell->setText(newpipe::tr("settings/session/title"));
     this->sessionCell->registerClickAction([this](brls::View*) {
         this->openSessionInfo();
@@ -264,6 +295,10 @@ void SettingsTab::syncFromStore() {
 
     this->proxyCell->setDetailText(settings.http_proxy.host.empty()
         ? newpipe::tr("settings/http_proxy/off") : settings.http_proxy.url());
+    this->proxyLoginCell->setVisibility(settings.http_proxy.host.empty()
+        ? brls::Visibility::GONE : brls::Visibility::VISIBLE);
+    this->proxyLoginCell->setDetailText(settings.http_proxy.username.empty()
+        ? newpipe::tr("settings/http_proxy/off") : settings.http_proxy.username);
     this->sessionCell->setDetailText(newpipe::tr(newpipe::AuthStore::instance().has_session()
         ? "settings/session/saved" : "settings/session/signed_out"));
 
@@ -273,21 +308,51 @@ void SettingsTab::syncFromStore() {
 void SettingsTab::editProxy() {
     const auto current = newpipe::SettingsStore::instance().settings().http_proxy;
     brls::Application::getImeManager()->openForText(
-        [this](std::string address) {
+        [this, current](std::string address) {
             const auto proxy = newpipe::HttpProxy::parse(address);
             if (!proxy) {
                 brls::Application::notify(newpipe::tr("settings/http_proxy/invalid"));
                 return;
             }
-            std::string error;
-            if (!newpipe::SettingsStore::instance().update_http_proxy(*proxy, &error)) {
-                brls::Application::notify(error);
-                return;
-            }
-            this->syncFromStore();
+            // Editing the same endpoint keeps its login. A new endpoint starts without credentials.
+            if (proxy->url() != current.url()) this->saveProxy(*proxy);
         },
         newpipe::tr("settings/http_proxy/title"), newpipe::tr("settings/http_proxy/hint"),
         270, current.url());
+}
+
+void SettingsTab::editProxyLogin() {
+    auto proxy = newpipe::SettingsStore::instance().settings().http_proxy;
+    if (proxy.host.empty()) return;
+    brls::Application::getImeManager()->openForText(
+        [this, proxy](std::string user) mutable {
+            if (!proxy.set_credentials(user, "")) {
+                brls::Application::notify(newpipe::tr("settings/http_proxy/invalid_login"));
+                return;
+            }
+            if (user.empty()) {
+                this->saveProxy(proxy);
+                return;
+            }
+            enter_proxy_password([this, proxy, user](std::string pass) mutable {
+                if (!proxy.set_credentials(user, pass)) {
+                    brls::Application::notify(newpipe::tr("settings/http_proxy/invalid_login"));
+                    return;
+                }
+                this->saveProxy(proxy);
+            });
+        },
+        newpipe::tr("settings/http_proxy/login"), newpipe::tr("settings/http_proxy/login_hint"),
+        newpipe::HttpProxy::max_credential_bytes, proxy.username);
+}
+
+void SettingsTab::saveProxy(const newpipe::HttpProxy& proxy) {
+    std::string error;
+    if (!newpipe::SettingsStore::instance().update_http_proxy(proxy, &error)) {
+        brls::Application::notify(error);
+        return;
+    }
+    this->syncFromStore();
 }
 
 void SettingsTab::resetToDefaults() {

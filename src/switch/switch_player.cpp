@@ -2094,7 +2094,9 @@ private:
             return false;
         }
 
-        mpv_request_log_messages(mpv_, "info");
+        const auto proxy = SettingsStore::instance().settings().http_proxy;
+        const bool proxy_auth = !proxy.username.empty();
+        mpv_request_log_messages(mpv_, proxy_auth ? "no" : "info");
         auto option = [this](const char* name, const char* value) {
             logf("player: mpv option begin name=%s", name);
             const int rc = mpv_set_option_string(mpv_, name, value);
@@ -2106,15 +2108,15 @@ private:
         log_line("player: software decode; NVTEGRA disabled for Switch 2");
         option("profile", "sw-fast");
         option("osc", "no");
-        option("terminal", "yes");
+        option("terminal", proxy_auth ? "no" : "yes");
         option("input-terminal", "no");
-        option("msg-level", "all=v");
+        option("msg-level", proxy_auth ? "all=no" : "all=v");
         option("config", "no");
         option("keep-open", "yes");
         option("force-seekable", "no");
         option("ytdl", "no");
-        const auto proxy = SettingsStore::instance().settings().http_proxy.url();
-        if (!proxy.empty() && option("http-proxy", proxy.c_str()) < 0) {
+        const auto proxy_url = proxy.ffmpeg_url();
+        if (!proxy_url.empty() && option("http-proxy", proxy_url.c_str()) < 0) {
             error = "mpv HTTP proxy setup failed";
             return false;
         }
@@ -2172,7 +2174,7 @@ private:
             return false;
         }
 
-        mpv_request_log_messages(mpv_, "warn");
+        mpv_request_log_messages(mpv_, proxy_auth ? "no" : "warn");
         mpv_set_wakeup_callback(mpv_, &SwitchPlayer::on_mpv_wakeup, this);
 
         mpv_opengl_init_params gl_init{};

@@ -135,6 +135,11 @@
     "http_proxy": {
       "title": "Proxy HTTP",
       "off": "Desactivado",
+      "login": "Usuario del proxy",
+      "password": "Contraseña del proxy",
+      "login_hint": "Introduce el usuario o deja el campo vacío para borrar las credenciales.",
+      "invalid_login": "Máximo 128 bytes por campo. El usuario no puede contener dos puntos.",
+      "keyboard_failed": "No se pudo abrir el teclado de contraseña.",
       "hint": "Introduce host:puerto o déjalo vacío para desactivar el proxy.",
       "invalid": "Proxy no válido. Introduce un host y un puerto entre 1 y 65535."
     },

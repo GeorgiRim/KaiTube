@@ -7868,8 +7868,9 @@ inline bool ClientImpl::write_request(Stream &strm, Request &req,
     }
   }
 
-  if (!proxy_basic_auth_username_.empty() &&
-      !proxy_basic_auth_password_.empty()) {
+  // For HTTPS the credentials belong on CONNECT only, outside the TLS tunnel.
+  if (!proxy_host_.empty() && (!is_ssl() || req.method == "CONNECT") &&
+      !proxy_basic_auth_username_.empty()) {
     if (!req.has_header("Proxy-Authorization")) {
       req.headers.insert(make_basic_authentication_header(
           proxy_basic_auth_username_, proxy_basic_auth_password_, true));

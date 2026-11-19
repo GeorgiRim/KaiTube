@@ -52,7 +52,9 @@ size_t write_callback(void* contents, size_t size, size_t nmemb, void* userp) {
 template <typename Client>
 void configure_proxy(Client& client) {
     const auto proxy = SettingsStore::instance().settings().http_proxy;
-    if (!proxy.host.empty()) client.set_proxy(proxy.host, proxy.port);
+    if (proxy.host.empty()) return;
+    client.set_proxy(proxy.host, proxy.port);
+    if (!proxy.username.empty()) client.set_proxy_basic_auth(proxy.username, proxy.password);
 }
 
 httplib::Headers to_headers(const std::vector<HttpHeader>& headers) {

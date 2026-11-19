@@ -32,3 +32,18 @@ index 15cea7fa5b..d50f1719d8 100644
  int ff_getnameinfo(const struct sockaddr *sa, int salen,
                     char *host, int hostlen,
                     char *serv, int servlen, int flags)
+--- a/libavformat/tls.c
++++ b/libavformat/tls.c
+@@ -71 +71 @@
+-    char buf[200], opts[50] = "";
++    char buf[2048], opts[50] = "";
+@@ -116 +116 @@
+-        char proxy_host[200], proxy_auth[200], dest[200];
++        char proxy_host[1024], proxy_auth[1024], dest[512];
+--- a/libavformat/http.c
++++ b/libavformat/http.c
+@@ -2110,3 +2110,3 @@
+     char auth[1024], pathbuf[1024], *path;
+-    char lower_url[100];
++    char lower_url[1024];
+     int port, ret = 0, auth_attempts = 0;

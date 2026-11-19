@@ -189,7 +189,7 @@ struct Input {
       error = "No demux memory";
       return false;
     }
-    proxy_url = SettingsStore::instance().settings().http_proxy.url();
+    proxy_url = SettingsStore::instance().settings().http_proxy.ffmpeg_url();
     if (!proxy_url.empty()) {
       format->opaque = this;
       default_io_open = format->io_open;

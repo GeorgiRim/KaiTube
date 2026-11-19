@@ -87,7 +87,7 @@ PlaybackQualityMode sanitize_playback_quality(int value) {
 }
 
 json serialize_settings(const AppSettings& settings) {
-    return {
+    json root = {
         {"language", settings.language},
         {"startup_tab", settings.startup_tab},
         {"home_kiosk", settings.home_kiosk},
@@ -95,6 +95,11 @@ json serialize_settings(const AppSettings& settings) {
         {"hide_short_videos", settings.hide_short_videos},
         {"http_proxy", settings.http_proxy.url()},
     };
+    if (!settings.http_proxy.username.empty()) {
+        root["http_proxy_username"] = settings.http_proxy.username;
+        root["http_proxy_password"] = settings.http_proxy.password;
+    }
+    return root;
 }
 
 AppSettings deserialize_settings(const json& root) {
@@ -106,6 +111,8 @@ AppSettings deserialize_settings(const json& root) {
         sanitize_playback_quality(root.value("playback_quality", 3));
     settings.hide_short_videos = root.value("hide_short_videos", false);
     settings.http_proxy = HttpProxy::parse(get_string(root, "http_proxy")).value_or(HttpProxy{});
+    settings.http_proxy.set_credentials(get_string(root, "http_proxy_username"),
+                                        get_string(root, "http_proxy_password"));
     return settings;
 }
 

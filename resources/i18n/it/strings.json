@@ -135,6 +135,11 @@
     "http_proxy": {
       "title": "Proxy HTTP",
       "off": "Disattivato",
+      "login": "Accesso al proxy",
+      "password": "Password del proxy",
+      "login_hint": "Inserisci il nome utente o lascia vuoto per rimuovere le credenziali.",
+      "invalid_login": "Massimo 128 byte per campo. Il nome utente non può contenere i due punti.",
+      "keyboard_failed": "Impossibile aprire la tastiera per la password.",
       "hint": "Inserisci host:porta o lascia vuoto per disattivare il proxy.",
       "invalid": "Proxy non valido. Inserisci un host e una porta da 1 a 65535."
     },

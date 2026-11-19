@@ -32,7 +32,11 @@ Copy the NRO to `/switch/` on your SD. Keep a working backup. Existing settings 
 
 ## Proxy
 
-Open **Settings → HTTP proxy** and enter the IPv4 address or hostname and port of an HTTP proxy that the console can reach, for example `192.168.1.10:8080`. The setting applies to new catalog, thumbnail and playback requests. The proxy must accept HTTPS tunnels (CONNECT) without authentication. Clear the field to restore the default connection. The app saves this setting on the SD card.
+Open **Settings → HTTP proxy** and enter the IPv4 address or hostname and port of an HTTP proxy that the console can reach, for example `192.168.1.10:8080`. The setting applies to new catalog, thumbnail and playback requests. The proxy must accept HTTPS tunnels (CONNECT). Clear the address to restore the default connection.
+
+For HTTP Basic authentication, open **Settings → Proxy login** after saving the address. Enter the username, then the password. Enter special characters as written. To remove the login, clear the username. Changing the proxy address also clears the saved login.
+
+KaiTube stores these credentials unencrypted in `/switch/kaitube_native_settings.json` on the SD card. With an HTTP proxy, Basic credentials travel unencrypted between the console and proxy. Use a trusted network or VPN for that connection.
 
 ## Account setup
 

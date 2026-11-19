@@ -135,6 +135,11 @@
     "http_proxy": {
       "title": "Proxy HTTP",
       "off": "Désactivé",
+      "login": "Identifiant du proxy",
+      "password": "Mot de passe du proxy",
+      "login_hint": "Saisissez un identifiant ou laissez le champ vide pour supprimer les identifiants.",
+      "invalid_login": "128 octets maximum par champ. L’identifiant ne peut pas contenir de deux-points.",
+      "keyboard_failed": "Impossible d’ouvrir le clavier du mot de passe.",
       "hint": "Saisissez hôte:port ou laissez le champ vide pour désactiver le proxy.",
       "invalid": "Proxy invalide. Saisissez un hôte et un port entre 1 et 65535."
     },

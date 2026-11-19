@@ -135,6 +135,11 @@
     "http_proxy": {
       "title": "HTTP proxy",
       "off": "Off",
+      "login": "Proxy login",
+      "password": "Proxy password",
+      "login_hint": "Enter a username, or leave blank to remove the login.",
+      "invalid_login": "Use up to 128 bytes per field. A username cannot contain a colon.",
+      "keyboard_failed": "Could not open the password keyboard.",
       "hint": "Enter host:port, or leave blank to turn off.",
       "invalid": "Invalid proxy. Enter a host and a port from 1 to 65535."
     },

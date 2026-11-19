@@ -25,18 +25,31 @@ int main() {
     std::ofstream(path) << R"({"language":"fr","startup_tab":"search"})";
     auto& store = newpipe::SettingsStore::instance();
     assert(store.settings().http_proxy.host.empty());
-    const auto proxy = *HttpProxy::parse("http://proxy.example:3128");
+    auto proxy = *HttpProxy::parse("http://proxy.example:3128");
+    assert(proxy.ffmpeg_url() == proxy.url());
+    assert(proxy.set_credentials("test@example", "p:%/+#?"));
+    assert(proxy.ffmpeg_url() == "http://test%40example:p%3A%25%2F%2B%23%3F@proxy.example:3128");
+    assert(proxy.url() == "http://proxy.example:3128");
+    assert(!proxy.set_credentials("user:name", "p"));
+    assert(!proxy.set_credentials("", "p"));
+    assert(!proxy.set_credentials("user", std::string(129, 'x')));
+    assert(!proxy.set_credentials("user", std::string("a\0b", 3)));
+    assert(!HttpProxy{}.set_credentials("user", "p"));
     assert(store.update_http_proxy(proxy));
     assert(store.reload());
-    assert(store.settings().http_proxy.url() == proxy.url());
+    assert(store.settings().http_proxy.ffmpeg_url() == proxy.ffmpeg_url());
     assert(store.settings().language == "fr" && store.settings().startup_tab == "search");
 
     std::filesystem::remove(path);
     std::filesystem::create_directory(path);
     assert(!store.update_http_proxy(HttpProxy{}));
-    assert(store.settings().http_proxy.url() == proxy.url());
+    assert(store.settings().http_proxy.ffmpeg_url() == proxy.ffmpeg_url());
     std::filesystem::remove(path);
 
+    auto cleared = proxy;
+    assert(cleared.set_credentials("", ""));
+    assert(store.update_http_proxy(cleared) && store.reload());
+    assert(store.settings().http_proxy.ffmpeg_url() == proxy.url());
     assert(store.update_http_proxy(HttpProxy{}));
     assert(store.reload() && store.settings().http_proxy.host.empty());
     assert(store.update_http_proxy(proxy));
