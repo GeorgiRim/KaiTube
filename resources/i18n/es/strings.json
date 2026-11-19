@@ -46,6 +46,7 @@
     "results_count": "«{}» • {} resultados"
   },
   "subscriptions": {
+    "channel_controls": "A Abrir canal • X Actualizar • RB Cuenta",
     "session_action": "Cuenta",
     "session_load_failed": "No se pudo cargar la cuenta",
     "feed_load_failed": "No se pudieron cargar las suscripciones",
@@ -71,7 +72,7 @@
     },
     "session_load_failed_body": "No se pudo cargar la cuenta",
     "feed_load_failed_body": "No se pudieron cargar las suscripciones",
-    "signed_out_body": "Inicio de sesión necesario\n{}"
+    "signed_out_body": "Pulsa R para iniciar sesión con tu teléfono o importar cookies de YouTube."
   },
   "library": {
     "section_action": "Sección",

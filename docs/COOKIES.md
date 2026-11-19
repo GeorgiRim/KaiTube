@@ -1,6 +1,6 @@
 # YouTube cookie login — Firefox guide
 
-Cookies are account-session credentials. Keep them on your own PC and SD. Never upload them to GitHub, Discord, screenshots or issue reports. KaiTube has no OAuth client setup and does not ask for your Google password.
+Cookies are account-session credentials. Keep them on your own PC and SD. Never upload them to GitHub, Discord, screenshots or issue reports. For device-code sign-in and read-only subscriptions, see the [account setup instructions](../README.md#account-setup).
 
 ## 1. Prepare a clean browser session
 

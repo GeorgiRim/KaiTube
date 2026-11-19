@@ -3,7 +3,7 @@ set -euo pipefail
 cd -- "$(dirname -- "$0")"
 for arg in "$@"; do
     case "$arg" in
-        --public) echo 'La beta usa solo cookie locali; non servono credenziali OAuth.' ;;
+        --public) echo 'La build pubblica carica il client OAuth dalla scheda SD.' ;;
         *) echo "Argomento non riconosciuto: $arg" >&2; exit 2 ;;
     esac
 done

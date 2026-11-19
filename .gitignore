@@ -21,3 +21,5 @@ account.json
 
 switch_newpipe_settings.json
 kaitube_native_settings.json
+client_secret_*.json
+switch_newpipe_session.json*

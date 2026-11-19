@@ -36,7 +36,7 @@ LibraryTab::LibraryTab() : service_() {
 }
 
 void LibraryTab::loadAccountHistory() {
-  if(!newpipe::AuthStore::instance().has_session()){brls::Application::notify(newpipe::ui("Importa prima i cookie YouTube nelle impostazioni account"));return;}
+  if(!newpipe::AuthStore::instance().session().has_cookies()){brls::Application::notify(newpipe::ui("Importa prima i cookie YouTube nelle impostazioni account"));return;}
   cloud_=true;history_tv_=true;if(spinner)spinner->setVisibility(brls::Visibility::VISIBLE);
   newpipe::ui_job(life_,[]{newpipe::YouTubeCatalogService service;auto feed=service.experimental_account_feed(true);return std::make_pair(feed,service.error_message());},[this](auto result,const std::string& error){
     items_.clear();if(result.first)items_=result.first->items;buildGrid();

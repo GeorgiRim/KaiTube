@@ -1,6 +1,7 @@
 #include <map>
 #include "newpipe/ui_text.hpp"
 #include "newpipe/youtube_catalog_service.hpp"
+#include "newpipe/google_device.hpp"
 
 #include <algorithm>
 #include <array>
@@ -1208,7 +1209,7 @@ std::optional<HomeFeed> YouTubeCatalogService::experimental_account_feed(bool hi
 
 std::optional<HomeFeed> YouTubeCatalogService::get_home_feed(const std::string& kiosk_id) const {
     const AppSettings settings = SettingsStore::instance().settings();
-    if(kiosk_id=="recommended" && auth_store_->has_session())
+    if(kiosk_id=="recommended" && auth_store_->session().has_cookies())
       return fetch_authenticated_browse_feed("FEwhat_to_watch", "YouTube", "https://www.youtube.com/",96,!settings.hide_short_videos);
     if(kiosk_id=="recommended") {
       json payload={{"browseId","FEwhat_to_watch"},{"context",{{"client",{{"clientName","WEB"},{"clientVersion",kWebClientVersion},{"hl","it"},{"gl","IT"}}}}}};
@@ -1244,7 +1245,7 @@ std::optional<HomeFeed> YouTubeCatalogService::fetch_authenticated_browse_feed(
         this->error_message_ = auth_error.empty() ? "로그인 세션 로드 실패" : auth_error;
         return std::nullopt;
     }
-    if (!this->auth_store_->has_session()) {
+    if (!this->auth_store_->session().has_cookies()) {
         this->error_message_ = "구독 피드를 보려면 로그인 세션이 필요합니다";
         return std::nullopt;
     }
@@ -1733,6 +1734,7 @@ SearchResults YouTubeCatalogService::fetch_search_results(
 }
 
 std::optional<HomeFeed> YouTubeCatalogService::get_subscriptions_feed() const {
+    if (auth_store_->session().device_login()) return google_subscriptions(*client_, *auth_store_, error_message_);
     const AppSettings settings = SettingsStore::instance().settings();
     return this->fetch_authenticated_browse_feed(
         "FEsubscriptions",

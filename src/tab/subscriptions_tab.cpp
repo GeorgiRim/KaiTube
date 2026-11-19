@@ -3,6 +3,7 @@
 #include "activity/google_login.hpp"
 
 #include "activity/stream_detail_activity.hpp"
+#include "activity/stream_feed_activity.hpp"
 #include "newpipe/auth_store.hpp"
 #include "newpipe/i18n.hpp"
 #include "newpipe/library_store.hpp"
@@ -106,8 +107,8 @@ void SubscriptionsTab::refresh() {
           }
           const auto session = this->service_.auth_session();
           if (this->bodyLabel) {
-            std::string body =
-                newpipe::tr("subscriptions/feed_load_failed_body");
+            std::string body = session.device_login() ? newpipe::ui("Account Google")
+                : newpipe::tr("subscriptions/feed_load_failed_body");
             if (!session.source_path.empty()) {
               body += "\n\n" + newpipe::tr("subscriptions/current_source",
                                            session.source_path);
@@ -141,7 +142,8 @@ void SubscriptionsTab::refresh() {
           }
           std::string body =
               newpipe::tr("subscriptions/session_prefix", session_name);
-          body += "\n" + newpipe::tr("subscriptions/controls");
+          body += "\n" + (session.device_login() ? newpipe::tr("subscriptions/channel_controls")
+                                                 : newpipe::tr("subscriptions/controls"));
           this->bodyLabel->setText(body);
         }
         if (this->spinner) {
@@ -166,16 +168,24 @@ void SubscriptionsTab::buildGrid() {
       auto *card = new StreamCard();
       card->setData(this->items_[j]);
       const size_t idx = j;
-      card->registerClickAction([this, idx](brls::View *) {
-        this->playStream(this->items_[idx]);
-        return true;
-      });
-      card->registerAction(newpipe::tr("common/info"),
-                           brls::ControllerButton::BUTTON_Y,
-                           [this, idx](brls::View *) {
-                             this->openStream(this->items_[idx]);
-                             return true;
-                           });
+      const auto& item = this->items_[j];
+      if (!item.channel_url.empty() && item.url == item.channel_url) {
+        card->registerClickAction([this, idx](brls::View*) {
+          this->openChannel(this->items_[idx]);
+          return true;
+        });
+      } else {
+        card->registerClickAction([this, idx](brls::View *) {
+          this->playStream(this->items_[idx]);
+          return true;
+        });
+        card->registerAction(newpipe::tr("common/info"),
+                             brls::ControllerButton::BUTTON_Y,
+                             [this, idx](brls::View *) {
+                               this->openStream(this->items_[idx]);
+                               return true;
+                             });
+      }
       card->addGestureRecognizer(new brls::TapGestureRecognizer(card));
       row->addView(card);
     }
@@ -214,9 +224,7 @@ void SubscriptionsTab::showSignedOutState() {
     this->statusLabel->setText(newpipe::tr("subscriptions/signed_out_title"));
   }
   if (this->bodyLabel) {
-    const std::string body =
-        newpipe::ui("Collega Google con un codice sul telefono per vedere i nuovi video delle tue iscrizioni. Premi R per accedere.");
-    this->bodyLabel->setText(body);
+    this->bodyLabel->setText(newpipe::tr("subscriptions/signed_out_body"));
   }
 }
 
@@ -241,6 +249,21 @@ void SubscriptionsTab::handleManualCookieInput(const std::string &text) {
             : error);
   }
   this->refresh();
+}
+
+void SubscriptionsTab::openChannel(const newpipe::StreamItem& channel) {
+  if (!allowInitialInput()) return;
+  newpipe::ui_job(life_, [channel] {
+    newpipe::YouTubeCatalogService service;
+    auto feed = service.get_channel_feed(channel);
+    return std::make_pair(std::move(feed), service.error_message());
+  }, [channel](auto result, const std::string& exception) {
+    if (result.first) {
+      brls::Application::pushActivity(new StreamFeedActivity(channel.title, std::move(result.first->items)));
+    } else {
+      brls::Application::notify(exception.empty() ? result.second : exception);
+    }
+  });
 }
 
 void SubscriptionsTab::playStream(const newpipe::StreamItem &item) {

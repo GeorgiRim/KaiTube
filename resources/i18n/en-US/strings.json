@@ -46,6 +46,7 @@
     "results_count": "\"{}\" • {} items"
   },
   "subscriptions": {
+    "channel_controls": "A Open channel • X Refresh • RB Account",
     "session_action": "Session",
     "session_load_failed": "Session load failed",
     "session_load_failed_body": "Delete the saved session file and import it again, or press RB to enter a new cookie.",
@@ -55,7 +56,7 @@
     "session_prefix": "Session: {}",
     "controls": "A Play • Y Info • X Refresh • RB Session",
     "signed_out_title": "Login session required",
-    "signed_out_body": "Press RB to open session management, then import an auth file or paste cookies directly.\n\nDefault import path:\n{}\n\nSupported formats:\nCookie header\nJSON {{\"cookie_header\":\"...\"}}\nNetscape cookies.txt",
+    "signed_out_body": "Press R to sign in with your phone or import YouTube cookies.",
     "session_dialog": {
       "saved": "A login session is already stored.\n\nSession source: {}",
       "signed_out": "No login session is stored.\n\nDefault auth file path:\n{}",

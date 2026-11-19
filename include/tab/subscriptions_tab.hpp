@@ -28,6 +28,7 @@ private:
     void openSessionDialog();
     void handleManualCookieInput(const std::string& text);
     bool allowInitialInput() const;
+    void openChannel(const newpipe::StreamItem& item);
     void playStream(const newpipe::StreamItem& item);
     void openStream(const newpipe::StreamItem& item);
 

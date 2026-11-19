@@ -46,6 +46,7 @@
     "results_count": "„{}“ • {} Ergebnisse"
   },
   "subscriptions": {
+    "channel_controls": "A Kanal öffnen • X Aktualisieren • RB Konto",
     "session_action": "Konto",
     "session_load_failed": "Konto konnte nicht geladen werden",
     "feed_load_failed": "Abos konnten nicht geladen werden",
@@ -71,7 +72,7 @@
     },
     "session_load_failed_body": "Konto konnte nicht geladen werden",
     "feed_load_failed_body": "Abos konnten nicht geladen werden",
-    "signed_out_body": "Anmeldung erforderlich\n{}"
+    "signed_out_body": "Drücke R, um dich mit deinem Smartphone anzumelden oder YouTube-Cookies zu importieren."
   },
   "library": {
     "section_action": "Bereich",

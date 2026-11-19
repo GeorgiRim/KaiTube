@@ -46,6 +46,7 @@
     "results_count": "\"{}\" • {} risultati"
   },
   "subscriptions": {
+    "channel_controls": "A Apri canale • X Aggiorna • RB Account",
     "session_action": "Account",
     "session_load_failed": "Impossibile caricare l'account",
     "feed_load_failed": "Impossibile caricare le iscrizioni",
@@ -71,7 +72,7 @@
     },
     "session_load_failed_body": "Impossibile caricare l'account",
     "feed_load_failed_body": "Impossibile caricare le iscrizioni",
-    "signed_out_body": "Accesso richiesto\n{}"
+    "signed_out_body": "Premi R per accedere con il telefono o importare i cookie di YouTube."
   },
   "library": {
     "section_action": "Sezione",

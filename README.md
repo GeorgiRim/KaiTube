@@ -40,9 +40,20 @@ KaiTube stores these credentials unencrypted in `/switch/kaitube_native_settings
 
 ## Account setup
 
+**Sign in with a device code** to see up to 96 subscribed channels in the Subscriptions tab. Select a channel to open its uploads. Home uses the public feed and the Library shows local watch history with this sign-in method.
+
+1. Select your project and enable **YouTube Data API v3**. [Google Cloud API Library](https://console.cloud.google.com/apis/library/youtube.googleapis.com)
+2. Configure **Google Auth Platform** with an app name and contact email. For an external app in **Testing**, add the Google account you use for YouTube under **Audience → Test users**. Under **Data Access**, add `https://www.googleapis.com/auth/youtube.readonly`. [Google consent setup](https://developers.google.com/workspace/guides/configure-oauth-consent)
+3. Under **Clients → Create client**, select **TVs and Limited Input devices** and download the client JSON. Rename it to `google-client.json` and copy it to `/switch/KaiTube-Native/google-client.json` on the SD card. Keep this file on the card for token renewal. [Google device flow](https://developers.google.com/identity/protocols/oauth2/limited-input-device)
+4. Open **Settings → Google account → Sign in with your phone**. On your phone, open the address shown on the console, enter its code and approve read-only access. KaiTube opens Subscriptions when Google confirms the sign-in.
+
+The SD session file contains the refresh token. **Sign out** removes the local session. You can revoke the app’s access in your Google Account. For an external project in Testing, Google expires the YouTube refresh token after seven days. [Google token expiration](https://developers.google.com/identity/protocols/oauth2#expiration)
+
+**Cookie import** also supports personalized Home and YouTube watch history. Signing in with either method replaces the current session after a successful save.
+
 Follow the **[step-by-step Firefox cookie guide and troubleshooting](docs/COOKIES.md)**. It explains exporting without an extension, using a clean single-account session, the exact SD path, how to confirm import success, and how to diagnose save/session errors.
 
-Cookies are credentials and are stored unencrypted on SD. Never share cookies, session JSON or their backup/temporary files. A Google OAuth client is not required.
+Cookies are credentials and are stored unencrypted on SD. Never share cookies, session JSON or their backup/temporary files. Cookie import works without an OAuth client.
 
 ## Player controls
 

@@ -26,3 +26,5 @@ jobs:
           /tmp/ump-test
           g++ -std=c++17 -Iinclude -Ivendor/third_party tests/http_proxy_test.cpp src/common/{settings_store,http_proxy,log}.cpp -o /tmp/proxy-test
           /tmp/proxy-test
+          g++ -std=c++17 -Iinclude -Ivendor/third_party tests/google_device_test.cpp src/common/{google_device,auth_store,log}.cpp -lcrypto -o /tmp/device-test
+          /tmp/device-test

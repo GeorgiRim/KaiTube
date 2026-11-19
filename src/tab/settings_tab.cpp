@@ -5,6 +5,7 @@
 
 #include "newpipe/auth_store.hpp"
 #include "newpipe/i18n.hpp"
+#include "newpipe/ui_text.hpp"
 #include "newpipe/library_store.hpp"
 #include "newpipe/log.hpp"
 #include "newpipe/settings_store.hpp"
@@ -250,7 +251,7 @@ SettingsTab::SettingsTab() {
         return true;
     });
 
-    this->sessionCell->setText(newpipe::tr("settings/session/title"));
+    this->sessionCell->setText(newpipe::ui("Account Google"));
     this->sessionCell->registerClickAction([this](brls::View*) {
         this->openSessionInfo();
         return true;
@@ -276,7 +277,7 @@ void SettingsTab::syncLocalizedText() {
         this->hideShortsCell->setText(newpipe::tr("settings/hide_shorts/title"));
     }
     if (this->sessionCell) {
-        this->sessionCell->setText(newpipe::tr("settings/session/title"));
+        this->sessionCell->setText(newpipe::ui("Account Google"));
     }
 
 }
@@ -299,8 +300,9 @@ void SettingsTab::syncFromStore() {
         ? brls::Visibility::GONE : brls::Visibility::VISIBLE);
     this->proxyLoginCell->setDetailText(settings.http_proxy.username.empty()
         ? newpipe::tr("settings/http_proxy/off") : settings.http_proxy.username);
-    this->sessionCell->setDetailText(newpipe::tr(newpipe::AuthStore::instance().has_session()
-        ? "settings/session/saved" : "settings/session/signed_out"));
+    const auto session = newpipe::AuthStore::instance().session();
+    this->sessionCell->setDetailText(session.device_login() ? newpipe::ui("Account salvato")
+        : newpipe::tr(session.has_cookies() ? "settings/session/title" : "settings/session/signed_out"));
 
 
 }

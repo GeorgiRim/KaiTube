@@ -1,12 +1,20 @@
 #pragma once
 
 #include <mutex>
+#include <chrono>
 #include <string>
 #include <vector>
 
 #include "newpipe/http_client.hpp"
 
 namespace newpipe {
+
+struct GoogleTokens {
+    std::string client_id;
+    std::string refresh_token;
+    std::string access_token;
+    std::chrono::steady_clock::time_point expires_at;
+};
 
 struct AuthSession {
     std::string cookie_header;
@@ -15,7 +23,10 @@ struct AuthSession {
     std::string source_path;
     std::string display_name;
 
-    bool authenticated() const { return (!cookie_header.empty() && !sapisid.empty()); }
+    GoogleTokens google;
+    bool has_cookies() const { return !cookie_header.empty() && !sapisid.empty(); }
+    bool device_login() const { return !google.client_id.empty() && !google.refresh_token.empty(); }
+    bool authenticated() const { return has_cookies() || device_login(); }
 };
 
 std::string default_auth_import_path();
@@ -39,6 +50,8 @@ public:
         const std::string& file_path = {},
         std::string* error_message = nullptr);
     bool clear(std::string* error_message = nullptr);
+    bool save_google_tokens(const GoogleTokens& tokens, std::string& error,
+                            const GoogleTokens* previous = nullptr);
 
     std::vector<HttpHeader> build_youtube_headers(
         const std::string& origin,

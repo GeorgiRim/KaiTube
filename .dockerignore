@@ -4,11 +4,12 @@
 .build-*
 output
 .gitignore
-private/google-client.json
-resources/google-client.json
+**/google-client.json
 
 .friends-build
 friends
 
 switch_newpipe_settings.json
 kaitube_native_settings.json
+**/client_secret_*.json
+**/switch_newpipe_session.json*

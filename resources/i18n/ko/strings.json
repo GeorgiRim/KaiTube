@@ -46,6 +46,7 @@
     "results_count": "\"{}\" • {}개"
   },
   "subscriptions": {
+    "channel_controls": "A 채널 열기 • X 새로고침 • RB 계정",
     "session_action": "세션",
     "session_load_failed": "세션 로드 실패",
     "session_load_failed_body": "세션 파일을 지우고 다시 가져오거나 RB로 새 쿠키를 입력하세요.",
@@ -55,7 +56,7 @@
     "session_prefix": "세션: {}",
     "controls": "A 재생 • Y 정보 • X 새로고침 • RB 세션",
     "signed_out_title": "로그인 세션 필요",
-    "signed_out_body": "RB로 세션 관리 화면을 열고 인증 파일을 불러오거나 쿠키를 직접 입력하세요.\n\n기본 import 경로:\n{}\n\n지원 형식:\nCookie header\nJSON {{\"cookie_header\":\"...\"}}\nNetscape cookies.txt",
+    "signed_out_body": "R을 눌러 휴대전화로 로그인하거나 YouTube 쿠키를 가져오세요.",
     "session_dialog": {
       "saved": "저장된 로그인 세션이 있습니다.\n\n세션 소스: {}",
       "signed_out": "로그인 세션이 없습니다.\n\n기본 인증 파일 경로:\n{}",

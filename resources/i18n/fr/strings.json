@@ -46,6 +46,7 @@
     "results_count": "« {} » • {} résultats"
   },
   "subscriptions": {
+    "channel_controls": "A Ouvrir la chaîne • X Actualiser • RB Compte",
     "session_action": "Compte",
     "session_load_failed": "Impossible de charger le compte",
     "feed_load_failed": "Impossible de charger les abonnements",
@@ -71,7 +72,7 @@
     },
     "session_load_failed_body": "Impossible de charger le compte",
     "feed_load_failed_body": "Impossible de charger les abonnements",
-    "signed_out_body": "Connexion requise\n{}"
+    "signed_out_body": "Appuyez sur R pour vous connecter avec votre téléphone ou importer des cookies YouTube."
   },
   "library": {
     "section_action": "Section",

@@ -396,7 +396,19 @@ bool AuthStore::load(std::string* error_message) {
     }
 
     std::string parse_error;
-    const auto session = parse_auth_source(raw, "saved session", default_auth_session_path(), &parse_error);
+    std::optional<AuthSession> session;
+    const auto saved = json::parse(raw, nullptr, false);
+    if (saved.is_object() && saved.contains("google_client_id")) {
+        if (saved["google_client_id"].is_string() && saved.contains("refresh_token") &&
+            saved["refresh_token"].is_string()) {
+            AuthSession google;
+            google.google.client_id = saved["google_client_id"].get<std::string>();
+            google.google.refresh_token = saved["refresh_token"].get<std::string>();
+            if (google.device_login()) session = std::move(google);
+        }
+    } else {
+        session = parse_auth_source(raw, "saved session", default_auth_session_path(), &parse_error);
+    }
     if (!session.has_value()) {
         if (error_message) {
             *error_message = parse_error.empty() ? "Invalid saved session" : parse_error;
@@ -511,15 +523,9 @@ bool AuthStore::clear(std::string* error_message) {
             return false;
         }
     }
-    const int rc = std::remove(default_auth_session_path().c_str());
-    if (rc != 0) {
-        std::ifstream existing(default_auth_session_path());
-        if (existing.good()) {
-            if (error_message) {
-                *error_message = "Cannot delete saved session";
-            }
-            return false;
-        }
+    if (std::remove(default_auth_session_path().c_str()) != 0 && errno != ENOENT) {
+        if (error_message) *error_message = "Cannot delete saved session";
+        return false;
     }
 
     this->session_ = {};
@@ -541,7 +547,7 @@ std::vector<HttpHeader> AuthStore::build_youtube_headers(
         session_copy = this->session_;
     }
 
-    if (!session_copy.authenticated()) {
+    if (!session_copy.has_cookies()) {
         if (error_message) {
             *error_message = "Import YouTube cookies first";
         }
@@ -563,6 +569,33 @@ std::vector<HttpHeader> AuthStore::build_youtube_headers(
     };
 }
 
+bool AuthStore::save_google_tokens(const GoogleTokens& tokens, std::string& error,
+                                   const GoogleTokens* previous) {
+    std::lock_guard<std::mutex> lock(mutex_);
+    if (previous && (session_.google.refresh_token != previous->refresh_token ||
+                     session_.google.client_id != previous->client_id)) {
+        error = "Account changed";
+        return false;
+    }
+    AuthSession next;
+    next.google = tokens;
+    if (!next.device_login()) {
+        error = "Incomplete Google session";
+        return false;
+    }
+    // Access tokens are short-lived and stay in memory. Commit a replacement
+    // refresh token before using it in place of the saved session.
+    const bool persist = !previous || previous->refresh_token != tokens.refresh_token;
+    std::swap(session_, next);
+    if (persist && !persist_session(&error)) {
+        std::swap(session_, next);
+        return false;
+    }
+    loaded_ = true;
+    error.clear();
+    return true;
+}
+
 bool AuthStore::persist_session(std::string* error_message) {
     // Caller holds mutex_ throughout the write and commit.
     const AuthSession& session_copy = this->session_;
@@ -574,6 +607,10 @@ bool AuthStore::persist_session(std::string* error_message) {
         {"display_name", session_copy.display_name},
     };
 
+    if (session_copy.device_login()) {
+        root = {{"google_client_id", session_copy.google.client_id},
+                {"refresh_token", session_copy.google.refresh_token}};
+    }
     if (!write_text_file(default_auth_session_path(), root.dump(2))) {
         if (error_message) {
             *error_message = "Cannot save session. Check auth-save diagnostics in app.log";

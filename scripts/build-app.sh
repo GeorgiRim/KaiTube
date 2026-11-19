@@ -2,8 +2,7 @@
 set -euo pipefail
 cd /work
 export PATH="/opt/devkitpro/devkitA64/bin:$PATH"
-rm -f resources/google-client.json
-echo "Account: cookie import only; OAuth disabled."
+echo "Account: device sign-in reads the Google client from the SD card."
 generator_src=vendor/borealis/library/lib/extern/libromfs/generator
 CC=/usr/bin/gcc CXX=/usr/bin/g++ cmake -S "$generator_src" -B .build-native-generator -DCMAKE_BUILD_TYPE=Release
 cmake --build .build-native-generator -j"$(nproc)"

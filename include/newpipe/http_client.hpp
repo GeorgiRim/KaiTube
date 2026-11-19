@@ -4,6 +4,7 @@
 #include <atomic>
 #include <string>
 #include <vector>
+#include <utility>
 
 namespace newpipe {
 
@@ -20,30 +21,40 @@ struct HttpHeader {
     std::string value;
 };
 
+struct HttpResponse {
+    long status;
+    std::string body;
+
+    bool ok() const { return status >= 200 && status < 300; }
+};
+
 class HttpClient {
 public:
     virtual ~HttpClient() = default;
 
-    virtual std::optional<std::string> get(
-        const std::string& url,
-        const std::vector<HttpHeader>& headers = {}) = 0;
+    virtual std::optional<HttpResponse> request(
+        const std::string& url, const std::vector<HttpHeader>& headers,
+        const std::string* post_body, bool follow_redirects) = 0;
 
-    virtual std::optional<std::string> post(
-        const std::string& url,
-        const std::string& body,
-        const std::vector<HttpHeader>& headers = {}) = 0;
+    std::optional<std::string> get(const std::string& url, const std::vector<HttpHeader>& headers = {}) {
+        auto response = request(url, headers, nullptr, true);
+        if (!response || !response->ok()) return std::nullopt;
+        return std::move(response->body);
+    }
+
+    std::optional<std::string> post(const std::string& url, const std::string& body,
+                                    const std::vector<HttpHeader>& headers = {}) {
+        auto response = request(url, headers, &body, true);
+        if (!response || !response->ok()) return std::nullopt;
+        return std::move(response->body);
+    }
 };
 
 class HttpsHttpClient final : public HttpClient {
 public:
-    std::optional<std::string> get(
-        const std::string& url,
-        const std::vector<HttpHeader>& headers = {}) override;
-
-    std::optional<std::string> post(
-        const std::string& url,
-        const std::string& body,
-        const std::vector<HttpHeader>& headers = {}) override;
+    std::optional<HttpResponse> request(
+        const std::string& url, const std::vector<HttpHeader>& headers,
+        const std::string* post_body, bool follow_redirects) override;
 };
 
 }  // namespace newpipe
